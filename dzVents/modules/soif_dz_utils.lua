@@ -75,17 +75,20 @@ function fn.F(str)
 end
 
 -------------------------------------------------------------------------
-function fn.EchoDebug(mess,parse_variables)
+function fn.EchoDebug(mess, parse_variables)
+	if parse_variables == nil then parse_variables = true end
 	fn._Print(mess, parse_variables, true)
 end
 
 -------------------------------------------------------------------------
-function fn.Echo(mess,parse_variables)
+function fn.Echo(mess, parse_variables)
+	if parse_variables == nil then parse_variables = true end
 	fn._Print(mess, parse_variables, false)
 end
 
 -------------------------------------------------------------------------
-function fn._Print(mess, parse_variables,is_debug)
+function fn._Print(mess, parse_variables, is_debug)
+	if parse_variables == nil then parse_variables = true end
 	if (glob.print_debug and is_debug) or (is_debug == false) then
 		local prefix =	fn.script_name
 		

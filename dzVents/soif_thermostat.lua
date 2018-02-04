@@ -55,21 +55,21 @@ end
 -------------------------------------------------------------------------------------------
 function DataHeaterStore(heater_id,on_off)
 	local var ='states_heater_'..heater_id
-	func.EchoDebug("Storing DATA : {var} = {on_off}",true)
+	func.EchoDebug("Storing DATA : {var} = {on_off}")
 	func.domoticz.data[var].add(on_off)
 end
 
 -------------------------------------------------------------------------------------------
 function DataHeaterListLastRepeatingState(heater_id, on_off)
 	local var ='states_heater_' .. heater_id
-	func.EchoDebug("** Finding DATA : {var} = {on_off} ******* ",true)
+	func.EchoDebug("** Finding DATA : {var} = {on_off} ******* ")
 	local out={}
 	local continue =true
 	func.domoticz.data[var].forEach(function(item,index)
 								if continue then 										
 									if item.data == on_off then 
 										out[index]	=item.time.msAgo
-										func.EchoDebug("** Same state {on_off} : {out[index]} ms ago",true);
+										func.EchoDebug("** Same state {on_off} : {out[index]} ms ago");
 									else 
 										continue = false
 									end
@@ -92,12 +92,12 @@ function SwitchHeaters(heaters , action)
 
 		if action == false then
 			func.Echo("Will Turn Heater : ({heater.id}) '{heater.name}'	OFF after '{delay} seconds' ",true)
-			--func.EchoDebug("Switch {heater.name} OFF after [k={k}] {offset} +{rand_min}/{rand_max} = {delay} sec",true)
+			--func.EchoDebug("Switch {heater.name} OFF after [k={k}] {offset} +{rand_min}/{rand_max} = {delay} sec")
 			heater.switchOff().afterSec(delay)
 			DataHeaterStore(heater_id, false)
 		elseif action ==true then
 			func.Echo("Will Turn Heater : ({heater.id}) '{heater.name}'	ON after '{delay} seconds' ",true)
-			--func.EchoDebug("Switch {heater.name} ON after {k} {delay} sec",true)
+			--func.EchoDebug("Switch {heater.name} ON after {k} {delay} sec")
 			heater.switchOn().afterSec(delay)
 			DataHeaterStore(heater_id, true)
 		end
@@ -108,7 +108,7 @@ end
 function GetWantedTemperature(uservar_id, sel_params)
 	local day_mode		= GetDayMode(func.domoticz.time)	
 	local raw_var 		= func.domoticz.variables(uservar_id) or ""
-	-- func.EchoDebug("UserVar {uservar_id} = {raw_var.value}	Type={sel_params.type}",true)
+	-- func.EchoDebug("UserVar {uservar_id} = {raw_var.value}	Type={sel_params.type}")
 	--func.EchoDebug(raw_var);
 	local vars			= func.Explode('-', raw_var.value)
 
@@ -118,13 +118,13 @@ function GetWantedTemperature(uservar_id, sel_params)
 	var_temps['we']		=vars[3] or var_temps['day']
 
 	if 		sel_params.type =='auto'	then
-		func.EchoDebug("Type: {sel_params.type}, Day: {day_mode}",true)
+		func.EchoDebug("Type: {sel_params.type}, Day: {day_mode}")
 		return var_temps[day_mode]
 	elseif	sel_params.type =='fixed'	then 
-		func.EchoDebug("Type: {sel_params.type}",true)
+		func.EchoDebug("Type: {sel_params.type}")
 		return sel_params.temperature
 	else
-		func.EchoDebug("Type: {sel_params.type}, we will cancel !",true)
+		func.EchoDebug("Type: {sel_params.type}, we will cancel !")
 		return nil
 	end	
 end
@@ -141,24 +141,24 @@ function ProcessThermSensor(sensor_id)
 	local new_state		=	cur_state
 	local sensor_temperature=func.Round(sensor.temperature,2)
 
-	func.EchoDebug("=> Process Temp.  Sensor '{sensor.name}' ({sensor_id})",true)
-	func.EchoDebug("Current Temperature : {sensor_temperature}		Current Heater State: {cur_state}",true)
+	func.EchoDebug("=> Process Temp.  Sensor '{sensor.name}' ({sensor_id})")
+	func.EchoDebug("Current Temperature : {sensor_temperature}		Current Heater State: {cur_state}")
 	local temp_wanted	= 	GetWantedTemperature(therm.uservar,sel_params)
 	
 	if temp_wanted == 999 then
-		func.EchoDebug("ERROR : target Temperature is NOT set in the user variable {therm.uservar} ==> CANCEL ",true)
+		func.EchoDebug("ERROR : target Temperature is NOT set in the user variable {therm.uservar} ==> CANCEL ")
 		return false
 	elseif temp_wanted == nil then
-		func.EchoDebug("Nothing to process ==> CANCEL ",true)
+		func.EchoDebug("Nothing to process ==> CANCEL ")
 		return true
 	else
-		func.EchoDebug("Target  Temperature : {temp_wanted}",true)
+		func.EchoDebug("Target  Temperature : {temp_wanted}")
 	end
 
 	
 	-- Temperature is reached ?
 	local diff 			= tonumber(temp_wanted) - sensor_temperature	
-	func.EchoDebug("Differ. Temperature : {diff}	(Error correction {".. vars.deviation .."} ) ",true)
+	func.EchoDebug("Differ. Temperature : {diff}	(Error correction {".. vars.deviation .."} ) ")
 
 	-- do we need to change ?
 	if (diff - vars.deviation) > 0 or (diff + vars.deviation) < 0 then
@@ -176,29 +176,29 @@ function ProcessThermSensor(sensor_id)
 	if count_same_state > 0 then 
 		local last_changed		= state_dates[1] 				or  0	--ms
 		local oldest_changed	= state_dates[count_same_state] or 0	--ms
-		func.EchoDebug("History has {count_same_state} event : last = {last_changed/1000} s, 	oldest : {oldest_changed/1000} s",true)
+		func.EchoDebug("History has {count_same_state} event : last = {last_changed/1000} s, 	oldest : {oldest_changed/1000} s")
 		
 		-- do we have to resend at the end of resend_dur
 		if (oldest_changed/(60*1000) > vars.resend_dur) and (vars.resend_dur > 0) then
-			func.EchoDebug("Oldest event is older than "..vars.resend_dur.." min ==> RESENDING OLDEST"  ,true)
+			func.EchoDebug("Oldest event is older than "..vars.resend_dur.." min ==> RESENDING OLDEST" )
 			SwitchHeaters(heaters, new_state)
 			return true
 		end
 
 		-- resending		
 		if count_same_state < vars.resent_count then
-			func.EchoDebug("State has been sent less than "..vars.resent_count.." times. Can we resend now?"  ,true)
+			func.EchoDebug("State has been sent less than "..vars.resent_count.." times. Can we resend now?" )
 			if last_changed/1000 > vars.resent_hold then
-				func.EchoDebug("Last State is older than "..vars.resent_hold.." sec ==> RESENDING LAST"  ,true)
+				func.EchoDebug("Last State is older than "..vars.resent_hold.." sec ==> RESENDING LAST" )
 				SwitchHeaters(heaters, new_state)
 			else
-				func.EchoDebug("NO, we have to wait longer	==> CANCEL "  ,true)
+				func.EchoDebug("NO, we have to wait longer	==> CANCEL " )
 			end	
 		else
-			func.EchoDebug("Resent count has been reached ==> CANCEL "  ,true)
+			func.EchoDebug("Resent count has been reached ==> CANCEL " )
 		end
 	else
-		func.EchoDebug("Not Past events with the same state => Switching to {new_state}",true)
+		func.EchoDebug("Not Past events with the same state => Switching to {new_state}")
 		SwitchHeaters(heaters, new_state)
 	end
 end
@@ -210,7 +210,7 @@ function ProcessThermSelector(selector_id)
 	local sel_params	= 	SelectArrayChild('selectors_levels','level',	item.level)
 
 	if thermostat.master then
-		func.EchoDebug("=> Process MASTER Selector '{item.name}'	to '{sel_params.name}' ",true)
+		func.EchoDebug("=> Process MASTER Selector '{item.name}'	to '{sel_params.name}' ")
 
 		for k,this_therm in pairs(vars.thermostats) do
 			if this_therm.master == nil then
@@ -218,7 +218,7 @@ function ProcessThermSelector(selector_id)
 			end
 		end
 	else
-		func.EchoDebug("=> Process normal Selector '{item.name}'	to '{sel_params.name}' ",true)
+		func.EchoDebug("=> Process normal Selector '{item.name}'	to '{sel_params.name}' ")
 
 		if sel_params.type 		== 'on' 	then
 			SwitchHeaters(thermostat.heaters , true)
@@ -277,7 +277,7 @@ return {
 			type='timer'
 		end
 
-		func.EchoDebug("Triggered by '{item.name}' ({item.idx})		Type: {type}",true)
+		func.EchoDebug("Triggered by '{item.name}' ({item.idx})		Type: {type}")
 		
 		if type == 'sensor' then
 			ProcessThermSensor(item.id)
