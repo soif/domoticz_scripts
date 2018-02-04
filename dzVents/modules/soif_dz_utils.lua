@@ -16,7 +16,7 @@ function fn.ScriptExecuteStart(script_name)
 	fn.EchoDebug("#############################################################################################")
 	
 	if not glob.debug_on then 
-		print(fn.script_name.. "Processing....") 
+		fn.Echo("Processing....") 
 	end
 end
 
@@ -24,7 +24,7 @@ end
 function fn.ScriptExecuteEnd(script_name)
 	local end_time = fn.GetExecTime(true)
 	if glob.debug_time and glob.debug_on then
-		fn.EchoDebug("######################################################## Execution Time : {end_time} #########")
+		fn.EchoDebug("######################################################## Execution Time : {end_time} #########\n")
 	else
 		fn.EchoDebug("#############################################################################################\n")
 	end
@@ -105,13 +105,14 @@ end
 -------------------------------------------------------------------------
 function fn._Print(mess, parse_variables, is_debug)
 	if parse_variables == nil then parse_variables = true end
+
 	if (glob.debug_on and is_debug) or (is_debug == false) then
 		local prefix =	fn.script_name
 		
 		if is_debug then
 			prefix	= "### " .. prefix .. " ### "
 		else
-			prefix	= prefix .. ": "			
+			prefix	= "++++++ [" ..prefix .. "] "			
 		end
 		if type(mess) == "table" then
 			fn.print_r(mess)
