@@ -1,25 +1,41 @@
 local glob	=	require('soif_dz_vars')
 local fn = {}
 -- Start FUNCTIONS #############################################################################
-fn.script_name = 'UntitledScript'
+fn.script_name 			= 'UntitledScript'
+
+fn.script_time_start 	= os.clock()
+fn.script_time_last		= fn.script_time_start
+fn.script_time_end		= fn.script_time_end
 
 -------------------------------------------------------------------------
 function fn.ScriptExecuteStart(script_name)
 	fn.script_name = script_name
-
-	local print_debug = glob.print_debug or false
+	--local debug_on = glob.debug_on or false
 
 	fn.EchoDebug("\n")
 	fn.EchoDebug("#############################################################################################")
 	
-	if not print_debug then 
+	if not glob.debug_on then 
 		print(fn.script_name.. "Processing....") 
 	end
 end
 
 -------------------------------------------------------------------------
 function fn.ScriptExecuteEnd(script_name)
-	fn.EchoDebug("#############################################################################################\n")
+	local end_time = fn.GetExecTime(true)
+	if glob.debug_time and glob.debug_on then
+		fn.EchoDebug("######################################################## Execution Time : {end_time} #########")
+	else
+		fn.EchoDebug("#############################################################################################\n")
+	end
+end
+
+-------------------------------------------------------------------------
+function fn.GetExecTime(since_start)
+	local from = fn.script_time_last
+	if since_start then from = fn.script_time_start end
+	fn.script_time_last =  os.clock()
+	return string.format("%.3f sec", os.clock() - from)
 end
 
 -------------------------------------------------------------------------
@@ -89,7 +105,7 @@ end
 -------------------------------------------------------------------------
 function fn._Print(mess, parse_variables, is_debug)
 	if parse_variables == nil then parse_variables = true end
-	if (glob.print_debug and is_debug) or (is_debug == false) then
+	if (glob.debug_on and is_debug) or (is_debug == false) then
 		local prefix =	fn.script_name
 		
 		if is_debug then

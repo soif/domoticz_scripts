@@ -23,7 +23,7 @@ local glob	=	require('soif_dz_vars')
 local vars	=	require('soif_dz_vars_thermostat')
 local func	=	require('soif_dz_utils')
 
-glob.print_debug = true
+glob.debug_on = true
 
 
 -- ### Functions #################################################################################################
