@@ -1,15 +1,14 @@
+
 local glob	=	require('soif_dz_vars')
 local vars	=	require('soif_dz_vars_thermostat')
 local func	=	require('soif_dz_utils')
 
-glob.script_name = vars.script_name
+-----------------------------------------------------------------------------------------
 glob.print_debug = true
 
------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------
 function GetDayMode(time)
-
 	local mode='day'
 
 	-- sunday, saturday
@@ -31,32 +30,6 @@ function SelectArrayChild(array, prop_name, prop_value)
 			return arr
 		end
 	end
-end
-
------------------------------------------------------------------------------------------
-function GetWantedTemperature(uservar_id, sel_params)
-	local day_mode		= GetDayMode(func.domoticz.time)	
-	local raw_var 		= func.domoticz.variables(uservar_id) or ""
-	-- func.EchoDebug("UserVar {uservar_id} = {raw_var.value}	Type={sel_params.type}",true)
-	--func.EchoDebug(raw_var);
-	local vars			= func.MySplit(raw_var.value, '-')
-
-	local var_temps		={}
-	var_temps['day']	=vars[1] or 999
-	var_temps['night']	=vars[2] or var_temps['day']
-	var_temps['we']		=vars[3] or var_temps['day']
-
-	if 		sel_params.type =='auto'	then
-		func.EchoDebug("Type: {sel_params.type}, Day: {day_mode}",true)
-		return var_temps[day_mode]
-	elseif	sel_params.type =='fixed'	then 
-		func.EchoDebug("Type: {sel_params.type}",true)
-		return sel_params.temperature
-	else
-		func.EchoDebug("Type: {sel_params.type}, we will cancel !",true)
-		return nil
-	end
-	
 end
 
 -------------------------------------------------------------------------------------------
@@ -89,7 +62,6 @@ end
 function SwitchHeaters(heaters , action)
 	local count_therms = #vars.thermostats + 4
 	--func.EchoDebug(heaters)
-
 	for k,heater_id in pairs(heaters) do 
 		local heater	= func.domoticz.devices(heater_id)
 		local rand_min	= (k -1)	* 2				-- 0	2	4
@@ -110,6 +82,31 @@ function SwitchHeaters(heaters , action)
 			DataHeaterStore(heater_id, true)
 		end
 	end
+end
+
+-----------------------------------------------------------------------------------------
+function GetWantedTemperature(uservar_id, sel_params)
+	local day_mode		= GetDayMode(func.domoticz.time)	
+	local raw_var 		= func.domoticz.variables(uservar_id) or ""
+	-- func.EchoDebug("UserVar {uservar_id} = {raw_var.value}	Type={sel_params.type}",true)
+	--func.EchoDebug(raw_var);
+	local vars			= func.MySplit(raw_var.value, '-')
+
+	local var_temps		={}
+	var_temps['day']	=vars[1] or 999
+	var_temps['night']	=vars[2] or var_temps['day']
+	var_temps['we']		=vars[3] or var_temps['day']
+
+	if 		sel_params.type =='auto'	then
+		func.EchoDebug("Type: {sel_params.type}, Day: {day_mode}",true)
+		return var_temps[day_mode]
+	elseif	sel_params.type =='fixed'	then 
+		func.EchoDebug("Type: {sel_params.type}",true)
+		return sel_params.temperature
+	else
+		func.EchoDebug("Type: {sel_params.type}, we will cancel !",true)
+		return nil
+	end	
 end
 
 -------------------------------------------------------------------------------------------
@@ -180,22 +177,11 @@ function ProcessThermSensor(sensor_id)
 		else
 			func.EchoDebug("Resent count has been reached ==> CANCEL "  ,true)
 		end
-		--vars.resent_count			=3			-- resend the same command count (to fix heaters that may have NOT changed properly)
-		--vars.resend_dur				=900		-- resend heater commands after this [min] time 
-
-		
-
 	else
 		func.EchoDebug("Not Past events with the same state => Switching to {new_state}",true)
 		SwitchHeaters(heaters, new_state)
 	end
-	
-
 end
-
-
-
-
 
 -------------------------------------------------------------------------------------------
 function ProcessThermSelector(selector_id)
@@ -203,9 +189,9 @@ function ProcessThermSelector(selector_id)
 	local thermostat	=	SelectArrayChild('thermostats',		'selector',	selector_id)
 	local sel_params	= 	SelectArrayChild('selectors_levels','level',	item.level)
 
-	--func.EchoDebug(sel_params)
 	if thermostat.master then
 		func.EchoDebug("=> Process MASTER Selector '{item.name}'	to '{sel_params.name}' ",true)
+
 		for k,this_therm in pairs(vars.thermostats) do
 			if this_therm.master == nil then
 				func.domoticz.devices(this_therm.selector).switchSelector(sel_params.level)
@@ -224,49 +210,62 @@ function ProcessThermSelector(selector_id)
 			ProcessThermSensor(thermostat.sensor)
 		end
 	end
-	
+end
+
+-------------------------------------------------------------------------------------------
+function ProcessThermTimer()
+	--TODO
 end
 
 
---- MAIN #################################################################################################
+-- #########################################################################################################
+-- ### MAIN ################################################################################################
+-- #########################################################################################################
 return {
+	-- is script active ---------------------
     active = true, -- optional
+	-- triggers -----------------------------
 	on = {
 		devices 	= vars.watched_devices,
 		variables	= vars.watched_variables,
     },
+	-- persistent variables -----------------
 	data = vars.persistent_data,
+	
+	-- main ---------------------------------
 	execute = function(domoticz, item)
+		-- Start --------------------------
+		func.ScriptExecuteStart(vars.script_name)
 
+		-- keep domoticz global
 		func.domoticz = domoticz
 
-		--func.EchoDebug()
-		func.EchoDebug("\n")
-		func.EchoDebug("#############################################################################################")
-		if not glob.print_debug then print(vars.script_name.. "Processing....") end
-		func.EchoDebug("Triggered by '{item.name}' ({item.idx})",true)
-
-		--what kind of trigger
-		local trig="Unknown" 
 		local type="Unknown" 
+		
+		-- what kind of trigger ?
 		if item.isDevice then
 			if item.temperature ~= nil then
 				type='sensor'
-				ProcessThermSensor(item.id)
 			elseif item.switchType == "Selector" then
 				type='selector'
-				ProcessThermSelector(item.id)
 			else
-				type='UNKNOWN DEVICE'
+				-- type='UNKNOWN DEVICE'
 			end
 		elseif item.isTimer then
 			type='timer'
 		end
 
-		if type == 'timer' then 
-			-- func.EchoDebug(item) 
+		func.EchoDebug("Triggered by '{item.name}' ({item.idx})		Type: {type}",true)
+		
+		if type == 'sensor' then
+			ProcessThermSensor(item.id)
+		elseif type == 'selector' then 	
+			ProcessThermSelector(item.id)
+		elseif type == 'selector' then 	
+			ProcessThermTimer()
 		end
 
-		func.EchoDebug("#############################################################################################\n")
+		-- END --------------------------
+		func.ScriptExecuteEnd()
 	end
 }
