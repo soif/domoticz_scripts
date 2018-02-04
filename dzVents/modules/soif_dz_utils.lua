@@ -23,7 +23,7 @@ function fn.ScriptExecuteEnd(script_name)
 end
 
 -------------------------------------------------------------------------
-function fn.MySplit(input,sep)
+function fn.Explode(sep,input)
 	--if sep == nil then
 	--	sep = "%s"
 	--end

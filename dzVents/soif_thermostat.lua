@@ -110,7 +110,7 @@ function GetWantedTemperature(uservar_id, sel_params)
 	local raw_var 		= func.domoticz.variables(uservar_id) or ""
 	-- func.EchoDebug("UserVar {uservar_id} = {raw_var.value}	Type={sel_params.type}",true)
 	--func.EchoDebug(raw_var);
-	local vars			= func.MySplit(raw_var.value, '-')
+	local vars			= func.Explode('-', raw_var.value)
 
 	local var_temps		={}
 	var_temps['day']	=vars[1] or 999
