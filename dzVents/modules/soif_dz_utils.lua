@@ -1,6 +1,26 @@
 local glob	=	require('soif_dz_vars')
 local fn = {}
 -- Start FUNCTIONS #############################################################################
+fn.script_name = 'UntitledScript'
+
+-------------------------------------------------------------------------
+function fn.ScriptExecuteStart(script_name)
+	fn.script_name = script_name
+
+	local print_debug = glob.print_debug or false
+
+	fn.EchoDebug("\n")
+	fn.EchoDebug("#############################################################################################")
+	
+	if not print_debug then 
+		print(fn.script_name.. "Processing....") 
+	end
+end
+
+-------------------------------------------------------------------------
+function fn.ScriptExecuteEnd(script_name)
+	fn.EchoDebug("#############################################################################################\n")
+end
 
 -------------------------------------------------------------------------
 function fn.MySplit(input,sep)
@@ -68,7 +88,7 @@ end
 -------------------------------------------------------------------------
 function fn._Print(mess, parse_variables,is_debug)
 	if (glob.print_debug and is_debug) or (is_debug == false) then
-		local prefix =	glob.script_name
+		local prefix =	fn.script_name
 		
 		if is_debug then
 			prefix	= "### " .. prefix .. " ### "
