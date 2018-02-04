@@ -1,12 +1,32 @@
+--[[ #################################################################################################################
+	 ## Thermostat ## a dzVent script for Domoticz
+
+	Helps to controls heaters using temperatures sensors
+
+	FEATURES
+	* Each Heaters is switched depending on its own target temperature
+	* Heaters switching is not done at the same time, and repeated a few time, (to avoid RF collision)
+	* Optionnal Master Selector
+	* Each Thermostat need 4 domoticz device:
+		- a Heater Switch device (On/Off), connected to the final Heater relay
+		- a Selector Switch, with state at least Off, On, Auto, and optionaly Confort[n], NoFrost, etc..
+		- a Temperature Sensor device
+		- a User Variable, that hold taget temperature fo the day + OPTIONALLY (SEPARATED BY '-') the night, and the weekend 
+
+	-------------------------------------------------------------
+	Copyright : Francois Dechery 2017 	https://github.com/soif/
+	-------------------------------------------------------------
+
+################################################################################################################### --]]
 
 local glob	=	require('soif_dz_vars')
 local vars	=	require('soif_dz_vars_thermostat')
 local func	=	require('soif_dz_utils')
 
------------------------------------------------------------------------------------------
 glob.print_debug = true
 
 
+-- ### Functions #################################################################################################
 -----------------------------------------------------------------------------------------
 function GetDayMode(time)
 	local mode='day'
@@ -218,9 +238,11 @@ function ProcessThermTimer()
 end
 
 
+
 -- #########################################################################################################
 -- ### MAIN ################################################################################################
 -- #########################################################################################################
+
 return {
 	-- is script active ---------------------
     active = true, -- optional
