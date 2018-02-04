@@ -84,7 +84,6 @@ function fn.Echo(mess,parse_variables)
 	fn._Print(mess, parse_variables, false)
 end
 
-
 -------------------------------------------------------------------------
 function fn._Print(mess, parse_variables,is_debug)
 	if (glob.print_debug and is_debug) or (is_debug == false) then
@@ -205,7 +204,31 @@ function fn.print_r(node)
 end
 
 
--- Private #############################################################################
+-- Private #####################################################################################
+
+
+
+
+-- OLD FUNCTIONS #############################################################################
+--[[
+
+-------------------------------------------------------------------------
+function fn.SetGlobalVariables(table)
+	if type(table) == 'table' then
+		for k,v in pairs(table) do
+			glob[k]=v
+		end
+	end
+end
+
+-------------------------------------------------------------------------
+function fn.Array_keys(arr, as_number)
+	local get_key=1
+	if as_number then
+		get_key=2
+	end
+	return _array_keys_or_values(arr,get_key)
+end
 
 -------------------------------------------------------------------------
 function _array_keys_or_values(arr, get_key)
@@ -224,31 +247,6 @@ function _array_keys_or_values(arr, get_key)
 	end
 	return out
 end
-
-
-
--- OLD FUNCTIONS #############################################################################
---[[
-
--------------------------------------------------------------------------
-function fn.SetGlobalVariables(table)
-	if type(table) == 'table' then
-		for k,v in pairs(table) do
-			glob[k]=v
-		end
-	end
-end
-
-
--------------------------------------------------------------------------
-function fn.Array_keys(arr, as_number)
-	local get_key=1
-	if as_number then
-		get_key=2
-	end
-	return _array_keys_or_values(arr,get_key)
-end
-
 
 -------------------------------------------------------------------------
 --https://stackoverflow.com/questions/7274380/how-do-i-display-array-elements-in-lua
@@ -273,20 +271,6 @@ function fn.print_r1(arr, indentLevel)
         end
     end
     return str
-end
-
-
--------------------------------------------------------------------------
-function MySplit(input,sep)
-	--if sep == nil then
-	--	sep = "%s"
-	--end
-	local out={} ; i=1
-    for str in input.gmatch(input, "([^"..sep.."]+)") do
-		out[i] = str
-		i = i + 1
-	end
-	return out
 end
 
 -------------------------------------------------------------------------
@@ -314,25 +298,8 @@ function TriggerUrl(url)
 	os.execute('curl -m 0.5 "'..url..'"')
 end
 
-
--------------------------------------------------------------------------
-function DebugVars()
-	DebugPrint('otherdevices : ##########################################################')
-	for i, v in pairs(otherdevices) do 
-		DebugPrint(i.."	= ".. v) 
-	end
-	DebugPrint('otherdevices_svalues : ##################################################')
-	for i, v in pairs(otherdevices_svalues) do
-		DebugPrint(i.."	: ".. v) 
-	end
-	DebugPrint('##################################################################')
-end
 --]]
 
--------------------------------------------------------------------------
--- g_random_seed = os.clock()
--- math.randomseed(g_random_seed)
-
--- Start FUNCTIONS #############################################################################
+-- END  #########################################################################################
 
 return fn

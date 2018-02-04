@@ -1,20 +1,85 @@
 local vars = {}
--- START Variables #############################################################################
-vars.script_name ="Thermostat"
 
--- misc settings ----------------------------------------
-vars.deviation				=0.3		-- maximun temperature deviation allowed
-vars.resent_count			=3			-- (count) how many time to resend the same command  (to fix heaters that may have NOT changed properly)
-vars.resent_hold			=5			-- (sec) resend the same command  not before this duration
-vars.resend_dur				=900		-- (min) always resend heater commands after this time 
+--[[ #################################################################################################################
+	Thermostat script VARIABLES 
+################################################################################################################# --]]
 
-vars.hold_on				=60			-- minimum time in seconds to hold on 
-vars.hold_off				=60			-- minimum time in seconds to hold off 
+vars.script_name	="Thermostat"		-- Name of the Script
+vars.temp_absent	=10					-- temperature wanted in 'absent' mode
 
--- temperatures ----------------------------------------
-vars.temp_absent			=10		-- temperature wanted in 'absent' mode
+-- rooms where day mode is forced for specified hours periods -----------------
+vars.day_extra_hours = {
+	['Salon']={
+		{6,9},		-- 'Salon' if in 'day' mode from 6h to 9h
+		{17,2},		-- 'Salon' if in 'day' mode from 17h to 2h
+	},
+	['SDB']={
+		{6,9},
+		{17,2}
+	},
+	['Bureau']={
+	},
+}
 
--- Selectors ----------------------------------------
+-- Thermostat definitions ------------------------------------------------------
+-- ids of each thermost elements
+vars.thermostats = {
+	{	-- MASTER
+		['selector']=123,
+		['master']	=true,
+	},
+	{	-- Salon
+		['sensor']	=159,
+		['heaters']	={75},
+		['selector']=115,
+		['uservar']	=1,
+	},
+	{	-- Cuisine
+		['sensor']	=167,
+		['heaters']	={77},
+		['selector']=117,
+		['uservar']	=3,
+	},
+	{	-- Bureau
+		['sensor']	=154,
+		['heaters']	={124},
+		['selector']=116,
+		['uservar']	=2,
+	},
+	{	-- Ch. Parents
+		['sensor']	=163,
+		['heaters']	={78},
+		['selector']=118,
+		['uservar']	=4,
+	},
+	{	-- Ch. Louis
+		['sensor']	=164,
+		['heaters']	={79},
+		['selector']=119,
+		['uservar']	=5,
+	},
+	{	-- Ch. Amis
+		['sensor']	=162,
+		['heaters']	={80},
+		['selector']=120,
+		['uservar']	=6,
+	},
+	{	-- SDB
+		['sensor']	=165,
+		['heaters']	={82},
+		['selector']=122,
+		['uservar']	=8,
+	},
+	{	-- Couloir
+		['sensor']	=158,
+		['heaters']	={81},
+		['selector']=121,
+		['uservar']	=7,
+	},
+}
+
+-- Selectors Level -------------------------------------------------------------------------
+-- definition of levels for all selectors
 vars.selectors_levels={
 	{
 		['level']		=0,
@@ -44,84 +109,19 @@ vars.selectors_levels={
 }
 
 
--- rooms where day mode is forced for specified hours periods -----------------
-vars.day_extra_hours = {
-	['Salon']={
-		{6,9},		-- 'Salon' if in 'day' mode from 6h to 9h
-		{17,2},		-- 'Salon' if in 'day' mode from 17h to 2h
-	},
-	['SDB']={
-		{6,9},
-		{17,2}
-	},
-	['Bureau']={
-	},
-}
+-- misc settings ---------------------------------------------------------------------------
+vars.deviation				=0.3		-- maximun temperature deviation allowed
+vars.resent_count			=3			-- (count) how many time to resend the same command  (to fix heaters that may have NOT changed properly)
+vars.resent_hold			=5			-- (sec) resend the same command  not before this duration
+vars.resend_dur				=900		-- (min) always resend heater commands after this time 
 
--- Thermostat definitions ----------------
 
-vars.thermostats = {
-	{	-- MASTER
---		['sensor']	=154,
---		['heaters']	={124},
-		['selector']=123,
-		['master']	=true,
---		['uservar']	=2,
-	},
 
-	{	-- Bureau
-		['sensor']	=154,
-		['heaters']	={124},
-		['selector']=116,
-		['uservar']	=2,
-	},
-	{	-- Couloir
-		['sensor']	=158,
-		['heaters']	={81},
-		['selector']=121,
-		['uservar']	=7,
-	},
-	{	-- Salon
-		['sensor']	=159,
-		['heaters']	={75},
-		['selector']=115,
-		['uservar']	=1,
-	},
-	{	-- Ch. Amis
-		['sensor']	=162,
-		['heaters']	={80},
-		['selector']=120,
-		['uservar']	=6,
-	},
-	{	-- Ch. Parents
-		['sensor']	=163,
-		['heaters']	={78},
-		['selector']=118,
-		['uservar']	=4,
-	},
-	{	-- Ch. Louis
-		['sensor']	=164,
-		['heaters']	={79},
-		['selector']=119,
-		['uservar']	=5,
-	},
-	{	-- SDB
-		['sensor']	=165,
-		['heaters']	={82},
-		['selector']=122,
-		['uservar']	=8,
-	},
-	{	-- Cuisine
-		['sensor']	=167,
-		['heaters']	={77},
-		['selector']=117,
-		['uservar']	=3,
-	},
-}
 
--- DO NOT CHANGE BELOW THIS LINE ################################################################
 
--- build watched arrays -------------------------
+-- DO NOT CHANGE BELOW THIS LINE #####################################################################################
+
+-- Build needed arrays -------------------------
 vars.watched_uservars	={}
 vars.watched_devices	={}
 vars.persistent_data	={}
@@ -137,8 +137,7 @@ for k,arr in pairs(vars.thermostats) do
 	end
 end
 
--- build Missing levels names -------------------------
-
+-- Add Missing levels names --------------------
 for k,arr in pairs(vars.selectors_levels) do
 	if arr.name == nil then
 		vars.selectors_levels[k].name=arr.type
@@ -146,9 +145,6 @@ for k,arr in pairs(vars.selectors_levels) do
 end
 
 
+-- END Variables #####################################################################################################
 
---local func	=	require('soif_dz_methods')
---vars.watched_sensors=func.array_keys(vars.thermostats,true)
-
--- END Variables #############################################################################
 return vars
