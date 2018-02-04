@@ -124,7 +124,7 @@ function GetWantedTemperature(uservar_id, sel_params)
 		func.EchoDebug("Type: {sel_params.type}")
 		return sel_params.temperature
 	else
-		func.EchoDebug("Type: {sel_params.type}, we will cancel !")
+		func.EchoDebug("Type: {sel_params.type},     we will cancel...")
 		return nil
 	end	
 end
@@ -142,7 +142,7 @@ function ProcessThermSensor(sensor_id)
 	local sensor_temperature=func.Round(sensor.temperature,2)
 
 	func.EchoDebug("=> Process Temp.  Sensor '{sensor.name}' ({sensor_id})")
-	func.EchoDebug("Current Temperature : {sensor_temperature}		Current Heater State: {cur_state}")
+	func.EchoDebug("Current Temperature : {sensor_temperature}			Heater State: {cur_state}")
 	local temp_wanted	= 	GetWantedTemperature(therm.uservar,sel_params)
 	
 	if temp_wanted == 999 then
