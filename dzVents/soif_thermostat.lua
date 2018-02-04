@@ -37,7 +37,7 @@ function GetDayMode(time)
 	end
 
 	-- night
-	if (isNightTime) then
+	if (func.domoticz.time.isNightTime) then
 		mode='night'
 	end
 	return mode
@@ -286,7 +286,7 @@ return {
 		elseif type == 'selector' then 	
 			ProcessThermTimer()
 		end
-
+		--func.EchoDebug(domoticz.time)
 		-- END --------------------------
 		func.ScriptExecuteEnd()
 	end
