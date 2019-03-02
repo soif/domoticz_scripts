@@ -9,9 +9,9 @@
 	* Optionnal Master Selector
 	* Each Thermostat need 4 domoticz device:
 		- a Heater Switch device (On/Off), connected to the final Heater relay
-		- a Selector Switch, with state at least Off, On, Auto, and optionaly Confort[n], NoFrost, etc..
+		- a Selector Switch, with states: Off, On, Auto, and optionaly Confort[n], NoFrost, etc..
 		- a Temperature Sensor device
-		- a User Variable, that hold taget temperature fo the day + OPTIONALLY (SEPARATED BY '-') the night, and the weekend 
+		- a User Variable, that hold target temperature for the day + OPTIONALLY (SEPARATED BY '-') the night, and the weekend 
 
 	-------------------------------------------------------------
 	Copyright : Francois Dechery 2017 	https://github.com/soif/
@@ -19,11 +19,11 @@
 
 ################################################################################################################### --]]
 
-local glob	=	require('soif_dz_vars')
+local glob	=	require('soif_dz_globals')
 local vars	=	require('soif_dz_vars_thermostat')
 local func	=	require('soif_dz_utils')
+--vars.debug_on = true
 
-glob.debug_on = true
 
 
 -- ### Functions #################################################################################################
@@ -69,7 +69,7 @@ function DataHeaterListLastRepeatingState(heater_id, on_off)
 								if continue then 										
 									if item.data == on_off then 
 										out[index]	=item.time.msAgo
-										func.EchoDebug("** Same state {on_off} : {out[index]} ms ago");
+										func.EchoDebug(" * Same state {on_off} : {out[index]} ms ago");
 									else 
 										continue = false
 									end
@@ -118,13 +118,13 @@ function GetWantedTemperature(uservar_id, sel_params)
 	var_temps['we']		=vars[3] or var_temps['day']
 
 	if 		sel_params.type =='auto'	then
-		func.EchoDebug("Type: {sel_params.type}, Day: {day_mode}")
+		func.EchoDebug("Target Type: {sel_params.type}, Day: {day_mode}")
 		return var_temps[day_mode]
 	elseif	sel_params.type =='fixed'	then 
-		func.EchoDebug("Type: {sel_params.type}")
+		func.EchoDebug("Target Type: {sel_params.type}")
 		return sel_params.temperature
 	else
-		func.EchoDebug("Type: {sel_params.type},     we will cancel...")
+		func.EchoDebug("Target Type: {sel_params.type},     we will cancel...")
 		return nil
 	end	
 end
@@ -161,7 +161,7 @@ function ProcessThermSensor(sensor_id)
 	func.EchoDebug("Differ. Temperature : {diff}	(Error correction {".. vars.deviation .."} ) ")
 
 	-- do we need to change ?
-	if (diff - vars.deviation) > 0 or (diff + vars.deviation) < 0 then
+	if (diff - vars.deviation) > 0  then --or (diff + vars.deviation) < 0
 		func.EchoDebug("COLD, nedd to Switch ON")
 		new_state = true
 	else
@@ -256,6 +256,8 @@ return {
 	
 	-- main ---------------------------------
 	execute = function(domoticz, item)
+		glob.debug_on = vars.debug_on
+
 		-- Start --------------------------
 		func.ScriptExecuteStart(vars.script_name)
 
@@ -289,5 +291,6 @@ return {
 		--func.EchoDebug(domoticz.time)
 		-- END --------------------------
 		func.ScriptExecuteEnd()
+		--glob.debug_on = false
 	end
 }
