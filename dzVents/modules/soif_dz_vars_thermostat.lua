@@ -7,19 +7,6 @@ local vars = {}
 vars.script_name	="Thermostat"		-- Name of the Script
 vars.temp_absent	=10					-- temperature wanted in 'absent' mode
 
--- rooms where day mode is forced for specified hours periods -----------------
-vars.day_extra_hours = {
-	['Salon']={
-		{6,9},		-- 'Salon' if in 'day' mode from 6h to 9h
-		{17,2},		-- 'Salon' if in 'day' mode from 17h to 2h
-	},
-	['SDB']={
-		{6,9},
-		{17,2}
-	},
-	['Bureau']={
-	},
-}
 
 -- Thermostat definitions ------------------------------------------------------
 -- ids of each thermost elements
@@ -41,8 +28,8 @@ vars.thermostats = {
 		['uservar']	=3,
 	},
 	{	-- Bureau
-		['sensor']	=154,
-		['heaters']	={124},
+		['sensor']	=352,
+		['heaters']	={324},	-- ,124 r.Bureau_433
 		['selector']=116,
 		['uservar']	=2,
 	},
@@ -98,7 +85,7 @@ vars.selectors_levels={
 		['level']		=30,
 		['type']		='fixed',
 		['name']		='Confort',
-		['temperature']	=22,
+		['temperature']	=24,
 	},
 	{
 		['level']		=40,
@@ -110,10 +97,11 @@ vars.selectors_levels={
 
 
 -- misc settings ---------------------------------------------------------------------------
+vars.holidays_use_day		='sat'		-- day period setting to use when on hollidays
 vars.deviation				=0.3		-- maximun temperature deviation allowed
 vars.resent_count			=3			-- (count) how many time to resend the same command  (to fix heaters that may have NOT changed properly)
 vars.resent_hold			=5			-- (sec) resend the same command  not before this duration
-vars.resend_dur				=900		-- (min) always resend heater commands after this time 
+vars.resend_dur				=10			-- (min) always resend heater commands after this time 
 
 
 
@@ -130,6 +118,7 @@ for k,arr in pairs(vars.thermostats) do
 	table.insert(vars.watched_devices,	arr.selector)
 	if arr.sensor ~= nil then	--skip MASTER
 		table.insert(vars.watched_devices,	arr.sensor)
+		table.insert(vars.watched_devices,	arr.selector) --also watch selectors
  		table.insert(vars.watched_uservars,	arr.uservar)
 		for k,heater_id in pairs(arr.heaters) do
 			vars.persistent_data["states_heater_"..heater_id]= { initial='off', history = true, maxItems = 10, maxHours = 48 }
