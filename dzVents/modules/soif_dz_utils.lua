@@ -1,4 +1,4 @@
-local glob	=	require('soif_dz_vars')
+local glob	=	require('soif_dz_globals')
 local fn = {}
 -- Start FUNCTIONS #############################################################################
 fn.script_name 			= 'UntitledScript'
@@ -13,22 +13,24 @@ function fn.ScriptExecuteStart(script_name)
 	--local debug_on = glob.debug_on or false
 
 	fn.EchoDebug("\n")
-	fn.EchoDebug("#############################################################################################")
+	fn.EchoDebug("#####################################################################################")
 	
 	if not glob.debug_on then 
-		fn.Echo("Processing....") 
+		fn.Echo(fn._StrPad(script_name..' ', 13,'=') .. "=========> Processing...") 
 	end
 end
 
 -------------------------------------------------------------------------
-function fn.ScriptExecuteEnd(script_name)
+function fn.ScriptExecuteEnd()
 	local end_time = fn.GetExecTime(true)
 	if glob.debug_time and glob.debug_on then
-		fn.EchoDebug("######################################################## Execution Time : {end_time} #########\n")
+		fn.EchoDebug("################################################ Execution Time : {end_time} #########\n")
 	else
-		fn.EchoDebug("#############################################################################################\n")
+		fn.EchoDebugLine(true)
 	end
+	glob.debug_on = false
 end
+
 
 -------------------------------------------------------------------------
 function fn.GetExecTime(since_start)
@@ -37,6 +39,61 @@ function fn.GetExecTime(since_start)
 	fn.script_time_last =  os.clock()
 	return string.format("%.3f sec", os.clock() - from)
 end
+
+-------------------------------------------------------------------------
+function fn.EchoDebugLine(line_break)
+	line_break = line_break or false
+	local cr=''
+	if (line_break) then cr="\n" end
+	fn.EchoDebug("#####################################################################################" .. cr )
+end
+
+
+-------------------------------------------------------------------------
+function fn.EchoDebug(mess, parse_variables)
+	if parse_variables == nil then parse_variables = true end
+	fn._Print(mess, parse_variables, true)
+end
+
+-------------------------------------------------------------------------
+function fn.Echo(mess, parse_variables)
+	if parse_variables == nil then parse_variables = true end
+	fn._Print(mess, parse_variables, false)
+end
+
+-------------------------------------------------------------------------
+function fn._Print(mess, parse_variables, is_debug)
+	if parse_variables == nil then parse_variables = true end
+
+	if (glob.debug_on and is_debug) or (is_debug == false) then
+		local prefix =	fn._StrPad(fn.script_name, 13,'.')
+		
+		if is_debug then
+			prefix	= "#####  " .. prefix .. " #### "
+		else
+			prefix	= "===== [" ..prefix .. "] === "			
+		end
+
+		if type(mess) == "table" then
+			fn.print_r(mess)
+		elseif type(mess) == "nil" then
+			print(prefix .. " print NIL !!!!")			
+		elseif mess == "\n" then
+			print("\n")
+		elseif mess == "\n\n" then
+			print("\n\n")
+		else
+			if parse_variables then
+				mess=fn.F(mess)
+			end
+			print(prefix .. mess .."")
+			--print("### TYPE="..type(mess))
+		end
+	end
+	
+end
+
+
 
 -------------------------------------------------------------------------
 function fn.Explode(sep,input)
@@ -56,6 +113,28 @@ end
 function fn.Round(num, n)
   local mult = 10^(n or 0)
   return math.floor(num * mult + 0.5) / mult
+end
+
+-----------------------------------------------------------------------------------------
+function fn.TableIsEmpty (table)
+	if table == nil then return true end
+    for _, _ in pairs(table) do
+        return false
+    end
+    return true
+end
+
+
+-----------------------------------------------------------------------------------------
+function fn.UrlEncode(str)
+   if str then
+      str = str:gsub("\n", "\r\n")
+      str = str:gsub("([^%w %-%_%.%~])", function(c)
+         return ("%%%02X"):format(string.byte(c))
+      end)
+      str = str:gsub(" ", "+")
+   end
+   return str	
 end
 
 -------------------------------------------------------------------------
@@ -91,46 +170,14 @@ function fn.F(str)
 end
 
 -------------------------------------------------------------------------
-function fn.EchoDebug(mess, parse_variables)
-	if parse_variables == nil then parse_variables = true end
-	fn._Print(mess, parse_variables, true)
-end
-
--------------------------------------------------------------------------
-function fn.Echo(mess, parse_variables)
-	if parse_variables == nil then parse_variables = true end
-	fn._Print(mess, parse_variables, false)
-end
-
--------------------------------------------------------------------------
-function fn._Print(mess, parse_variables, is_debug)
-	if parse_variables == nil then parse_variables = true end
-
-	if (glob.debug_on and is_debug) or (is_debug == false) then
-		local prefix =	fn.script_name
-		
-		if is_debug then
-			prefix	= "### " .. prefix .. " ### "
-		else
-			prefix	= "++++++ [" ..prefix .. "] "			
-		end
-		if type(mess) == "table" then
-			fn.print_r(mess)
-		elseif type(mess) == "nil" then
-			print(prefix .. " print NIL !!!!")			
-		elseif mess == "\n" then
-			print("\n")
-		elseif mess == "\n\n" then
-			print("\n\n")
-		else
-			if parse_variables then
-				mess=fn.F(mess)
-			end
-			print(prefix .. mess .."")
-			--print("### TYPE="..type(mess))
-		end
+function fn._StrPad(str,len,char)
+	char =char or ' '
+	str= string.sub (str, 1, len)
+	local pad = len - #str
+	if pad > 0 then
+		str = str .. string.rep(char, pad)	
 	end
-	
+	return str
 end
 
 -------------------------------------------------------------------------
@@ -147,7 +194,7 @@ function fn.print_r(node)
 
     local cache, stack, output = {},{},{}
     local depth = 1
-    local output_str = "### ARRAY {\n"
+    local output_str = "#####  ARRAY {\n"
 
     while true do
         local size = 0
