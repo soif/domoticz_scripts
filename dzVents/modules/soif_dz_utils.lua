@@ -8,16 +8,18 @@ fn.script_time_last		= fn.script_time_start
 fn.script_time_end		= fn.script_time_end
 
 -------------------------------------------------------------------------
-function fn.ScriptExecuteStart(script_name)
+function fn.ScriptExecuteStart(script_name,script_title)
 	fn.script_name = script_name
+	script_title = script_title or "Runing: "..script_name.." ..."
 	--local debug_on = glob.debug_on or false
 
 	fn.EchoDebug("\n")
 	fn.EchoDebug("#####################################################################################")
 	
 	if not glob.debug_on then 
-		fn.Echo(fn._StrPad(script_name..' ', 13,'=') .. "=========> Processing...") 
+		-- fn.Echo(fn._StrPad(script_title..' ', 60,'=') ) 
 	end
+		fn.Echo(fn._StrPad(script_title..' ', 60,'=') ) 
 end
 
 -------------------------------------------------------------------------
@@ -84,7 +86,9 @@ function fn._Print(mess, parse_variables, is_debug)
 			print("\n\n")
 		else
 			if parse_variables then
-				mess=fn.F(mess)
+				if type(mess) == "string" then
+					mess=fn.F(mess)
+				end
 			end
 			print(prefix .. mess .."")
 			--print("### TYPE="..type(mess))
@@ -124,7 +128,17 @@ function fn.TableIsEmpty (table)
     return true
 end
 
+-----------------------------------------------------------------------------------------
+function fn.TableHasKey(table,key)
+    return table[key] ~= nil
+end
 
+-----------------------------------------------------------------------------------------
+function fn.TableCount(table)
+  local count = 0
+  for _ in pairs(table) do count = count + 1 end
+  return count
+end
 -----------------------------------------------------------------------------------------
 function fn.UrlEncode(str)
    if str then
