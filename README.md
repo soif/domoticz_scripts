@@ -5,7 +5,7 @@ Various Scripts to use in Domoticz
 
 ## dzVents
 
-## Featured scripts
+### Featured scripts
 - **soif_thermostat** : handle heaters  using a temperaure sensor, a (mode) selector and a (relay) switch, with differents temperature per room/hours, or when absent.
 - **soif_pirs** : handle PIRs sensors, to trigger one of mutiple devices, with optionnal notifications (using PMD), durations times, debounce time, period, master switches,....
 
