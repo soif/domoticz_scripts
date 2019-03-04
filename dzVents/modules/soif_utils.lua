@@ -1,4 +1,4 @@
-local glob	=	require('soif_dz_globals')
+local glob	=	require('soif_conf/globals')
 local fn = {}
 -- Start FUNCTIONS #############################################################################
 fn.script_name 			= 'UntitledScript'

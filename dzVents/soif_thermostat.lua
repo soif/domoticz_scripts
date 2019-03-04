@@ -19,9 +19,10 @@
 
 ################################################################################################################### --]]
 
-local glob	=	require('soif_dz_globals')
-local vars	=	require('soif_dz_vars_thermostat')
-local func	=	require('soif_dz_utils')
+local glob	=	require('soif_conf/globals')
+local vars	=	require('soif_conf/thermostat')
+local func	=	require('soif_utils')
+
 --vars.debug_on = true
 
 
