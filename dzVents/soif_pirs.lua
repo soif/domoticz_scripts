@@ -22,10 +22,8 @@ vars.active				=true
 --vars.solo_pir				=glob.but_test
 
 -- ### Functions #################################################################################################
-local domoticz	={}	-- make it global
 
 local this_pir	={};
-
 
 -----------------------------------------------------------------------------------------
 function InitPir(conf, item)
@@ -284,10 +282,6 @@ function _aueryToString(fields)
 	return query
 end
 
-
-
-
-
 -----------------------------------------------------------------------------------------
 function NotifyNabaztag(mode, mess)
 	mode	= mode		or 'tts'
@@ -305,7 +299,6 @@ function NotifyNabaztag(mode, mess)
 	TriggerUrl(url)
 	func.EchoDebug("NotifyNabaztag :  " .. url .. " " )
 end
-
 
 -----------------------------------------------------------------------------------------
 function NotifyIndicatorLamp(idx, color, sec)
@@ -344,6 +337,7 @@ function TriggerUrl(url)
 	os.execute("curl  '" .. url .."' > /dev/null 2>&1 &")
 end
 
+----------------------------------------------------
 function GetPirFromId(id)
 	for k,v in pairs(vars.pirs) do
 		if v.id == id then
