@@ -35,7 +35,9 @@ vars.def.growl.file			='pir'
 PIRs properties:
 All properties are optionals, except the 'id'
 - id		: (inf)				[REQUIRED] PIR idx from Domoticz
-- name		: (str)				Name of your PIR
+- name		: (str)				Name of your PIR. Defaults to vars.def.name
+- title		: (str)				Title	of the notifications actions, Defaults to 'name' or vars.def.title
+- message	: (str)				Message	of the notifications actions, Defaults to vars.def.message
 - actions	: {str OR table}	Actions, Notification to do ? growl | kodi | kodis | indicator_light | indicator_flash | nab_tts | nab_file | nab_preset
 - devices	: (int OR table)	Devices IDX to switch On (for action: 'switch')
 - dur		: (int OR table) 	(seconds) Duration to stay On, can be an array (for each devices ). 0 = infinite time
@@ -43,8 +45,8 @@ All properties are optionals, except the 'id'
 - day_mode	: (int)				When to switch : (0) always | (1)  night | (2) day
 - masters	: (int OR table)	Switch(es) IDX used to disable the PIR's actions
 - growl	: 	; (table)			Properties for growl actions
-	-file	: (str)				Icon url
-	-file	: (str)				Icon url
+	-title	: (str)				Override the PIR.title
+	-message: (str)				Override the PIR.message
 - nabaztag	: (str)				file, preset, or message for Nabaztag
 
 --]]
