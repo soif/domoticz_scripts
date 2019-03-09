@@ -98,6 +98,18 @@ function fn._Print(mess, parse_variables, is_debug)
 end
 
 
+-----------------------------------------------------------------------------------------
+function fn.preg_replace(pat,with,p)
+	return (string.gsub(p,pat,with))
+end
+
+-----------------------------------------------------------------------------------------
+function fn.split(source, delimiters)
+        local elements = {}
+        local pattern = '([^'..delimiters..']+)'
+        string.gsub(source, pattern, function(value) elements[#elements + 1] =     value;  end);
+        return elements
+end
 
 -------------------------------------------------------------------------
 function fn.Explode(sep,input)
@@ -111,7 +123,6 @@ function fn.Explode(sep,input)
 	end
 	return out
 end
-
 
 -------------------------------------------------------------------------
 function fn.Round(num, n)
