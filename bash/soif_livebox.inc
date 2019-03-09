@@ -1,28 +1,22 @@
 #!/bin/bash
 source `dirname $0`/soif_conf.conf
-
-##########################################################################################
-# Functions for soif_livebox scripts
 # NOTE : python is required for JSON Output
 ##########################################################################################
-
-
-
-# Variables ##############################################################################
+# Livebox Globals and Functions ##########################################################
+##########################################################################################
+# Copyright (C) 2018 by François Déchery, aka Soif - https://github.com/soif/            #
+##########################################################################################
 
 myLivebox=${SOIF_GLOB[livebox_host]}
 myPassword=${SOIF_GLOB[livebox_pass]}
 myTmpDir=/tmp
-
-
-##########################################################################################
-##########################################################################################
 
 uid=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16  | awk -vdate="$(date)" '{print date$1}' | md5sum | awk '{print $1}'`
 
 myFileOutput=$myTmpDir/soif_livebox_out_$uid.txt
 myFileCookies=$myTmpDir/soif_livebox_coo_$uid.txt
 myContextID=''
+
 
 
 # Functions ##############################################################################

@@ -1,6 +1,11 @@
 #!/bin/bash
+source `dirname $0`/soif_livebox.inc 
 # NOTE : python is required for JSON Output
-source `dirname $0`/soif_livebox.inc
+##########################################################################################
+# Livebox : Get Statistics Info ##########################################################
+##########################################################################################
+# by François Déchery, aka Soif - https://github.com/soif/                               #
+##########################################################################################
 
 connectLivebox 	# connect and grab myFileCookies and myContextID -------
 

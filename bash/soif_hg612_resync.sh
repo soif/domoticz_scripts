@@ -1,5 +1,8 @@
 #!/bin/bash
 
-COMMAND="xdslcmd start --up"
+##########################################################################################
+# Huawei HG612 Modem : Restart ADSL Sync #################################################
+##########################################################################################
 
-. `dirname $0`/soif_hg612_telnet.sh
+COMMAND="xdslcmd start --up"
+source `dirname $0`/soif_hg612_telnet.sh

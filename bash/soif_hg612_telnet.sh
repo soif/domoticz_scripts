@@ -2,14 +2,21 @@
 source `dirname $0`/soif_conf.conf
 
 ##########################################################################################
-# Send Telnet Command
+# Huawei HG612 Modem : Send TELNET command ###############################################
 ##########################################################################################
-# examples :
+# by François Déchery, aka Soif - https://github.com/soif/                               #
+##########################################################################################
+
+# command examples :
+# ----------------------------------------------------------------------------------------
 #xdslcmd start --up --snr 35
 #xdslcmd start --up --snr 90
 #xdslcmd start --up
 #xdslcmd connection --down
 #xdslcmd connection --up
+
+
+
 ##########################################################################################
 
 HOST=${SOIF_GLOB[h612_host]}
@@ -19,7 +26,6 @@ PASS=${SOIF_GLOB[h612_pass]}
 COMMAND=${COMMAND:-$1}
 
 echo "Sending command '$COMMAND' to $HOST"
-exit 0
 
 if  true ; then
 (
