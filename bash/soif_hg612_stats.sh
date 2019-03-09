@@ -1,15 +1,12 @@
 #!/bin/bash
 source `dirname $0`/soif_conf.conf
 
+
+
 URL="http://${SOIF_GLOB[h612_host]}/html/status/xdslStatus.asp"
 
 RAW=$(wget -qO- "$URL")
 CLEAN=`echo "$RAW" | head -n 1 | sed -E s/.*stDsl//g | sed -E s/\"//g  | sed -E "s/,/ /g" `
-
-#echo "$RAW"
-#echo "----"
-#echo "$CLEAN"
-#echo "----"
 
 declare -a KEYS
 declare -a VALUES
@@ -32,10 +29,9 @@ KEYS+=('pwr_down');		VALUES+=(` echo "$CLEAN" | awk '{print $13/10}' `)
 #KEYS+=('snr_up');		VALUES+=(` echo "$CLEAN" | awk '{print $14/10}' `)
 #KEYS+=('snr_down');		VALUES+=(` echo "$CLEAN" | awk '{print $15/10}' `)
 
-
+# output as JSON #########################################################################
 JSON="{"
 for K in "${!VALUES[@]}"; do 
-#	echo ${KEYS[$K]}:	${VALUES[$K]}; 
 	JSON+='"'
 	JSON+=${KEYS[$K]}
 	JSON+='": "'
