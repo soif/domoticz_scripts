@@ -139,6 +139,26 @@ function fn.TableCount(table)
   for _ in pairs(table) do count = count + 1 end
   return count
 end
+
+-----------------------------------------------------------------------------------------
+function fn.TablepCopy(object)
+    local lookup_table = {}
+    local function _copy(object)
+        if type(object) ~= "table" then
+            return object
+        elseif lookup_table[object] then
+            return lookup_table[object]
+        end
+        local new_table = {}
+        lookup_table[object] = new_table
+        for index, value in pairs(object) do
+            new_table[_copy(index)] = _copy(value)
+        end
+        return setmetatable(new_table, getmetatable(object))
+    end
+    return _copy(object)
+end
+
 -----------------------------------------------------------------------------------------
 function fn.UrlEncode(str)
    if str then
@@ -149,6 +169,12 @@ function fn.UrlEncode(str)
       str = str:gsub(" ", "+")
    end
    return str	
+end
+
+
+-------------------------------------------------------------------------
+function fn.isEmpty(s)
+  return s == nil or s == ''
 end
 
 -------------------------------------------------------------------------
@@ -292,6 +318,23 @@ end
 
 -- OLD FUNCTIONS #############################################################################
 --[[
+
+-------------------------------------------------------------------------
+-- https://stackoverflow.com/questions/15429236/how-to-check-if-a-module-exists-in-lua
+function isModuleAvailable(name)
+  if package.loaded[name] then
+    return true
+  else
+    for _, searcher in ipairs(package.searchers or package.loaders) do
+      local loader = searcher(name)
+      if type(loader) == 'function' then
+        package.preload[name] = loader
+        return true
+      end
+    end
+    return false
+  end
+end
 
 -------------------------------------------------------------------------
 function fn.SetGlobalVariables(table)
