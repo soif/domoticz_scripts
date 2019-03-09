@@ -14,9 +14,16 @@ myLivebox=${SOIF_GLOB[livebox_host]}
 myPassword=${SOIF_GLOB[livebox_pass]}
 myTmpDir=/tmp
 
-myFileOutput=$myTmpDir/soif_livebox_stats_Output.txt
-myFileCookies=$myTmpDir/soif_livebox_stats_Cookies.txt
+
+##########################################################################################
+##########################################################################################
+
+uid=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16  | awk -vdate="$(date)" '{print date$1}' | md5sum | awk '{print $1}'`
+
+myFileOutput=$myTmpDir/soif_livebox_out_$uid.txt
+myFileCookies=$myTmpDir/soif_livebox_coo_$uid.txt
 myContextID=''
+
 
 # Functions ##############################################################################
 
