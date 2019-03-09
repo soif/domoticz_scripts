@@ -1,6 +1,5 @@
 #!/bin/bash
 # NOTE : python is required for JSON Output
-
 source `dirname $0`/soif_livebox.inc
 
 connectLivebox 	# connect and grab myFileCookies and myContextID -------
@@ -11,7 +10,6 @@ getMIBs=`curl -s -b "$myFileCookies" -X POST -H 'Content-Type: application/x-sah
 #getVOIP=`curl -s -b "$myFileCookies" -X POST -H 'Content-Type: application/x-sah-ws-4-call+json' -H "X-Context: $myContextID" -d "{\"service\":\"VoiceService.VoiceApplication\",\"method\":\"listTrunks\",\"parameters\":{}}" http://$myLivebox/ws`
 #getTV=`curl -s -b "$myFileCookies" -X POST -H 'Content-Type: application/x-sah-ws-4-call+json' -H "X-Context: $myContextID" -d "{\"service\":\"NMC.OrangeTV\",\"method\":\"getIPTVStatus\",\"parameters\":{}}" http://$myLivebox/ws`
 #getInternet=`curl -s -b "$myFileCookies" -X POST -H 'Content-Type: application/x-sah-ws-4-call+json' -H "X-Context: $myContextID" -d "{\"service\":\"NMC\",\"method\":\"getWANStatus\",\"parameters\":{}}" http://$myLivebox/ws`
-
 
 # output as JSON -------------------------------------------------------
 echo '{"dhcp":'
