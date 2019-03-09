@@ -7,11 +7,18 @@ declare -A SOIF_GLOB
 # -------------------------------------------------------------------------------------- #
 # H612 Modem 
 # -------------------------------------------------------------------------------------- #
-SOIF_GLOB[h612_host]=modem.lo.lo	# host or ip
-SOIF_GLOB[h612_user]=admin			# Admin UserName
-SOIF_GLOB[h612_pass]=admin			# Admin Password
+SOIF_GLOB[h612_host]=modem.lo.lo		# H612 host or ip
+SOIF_GLOB[h612_user]=admin				# H612 Admin UserName
+SOIF_GLOB[h612_pass]=admin				# H612 Admin Password
 
 
 # -------------------------------------------------------------------------------------- #
 # Livebox Modem 
+# -------------------------------------------------------------------------------------- #
+SOIF_GLOB[livebox_host]=10.2.11.3		# Livebox Host or ip
+SOIF_GLOB[livebox_pass]=YOUR_PASS		# Livebox Admin Password
+
+
+# -------------------------------------------------------------------------------------- #
+# Place Holder 
 # -------------------------------------------------------------------------------------- #
