@@ -48,11 +48,11 @@ All properties are optionals, except the 'id'
 
 
 vars.def					={}
---vars.def.title			='PIR';
-vars.def.message			='Detection';
-vars.def.dur				=10;
-vars.def.day_mode			=1;
-vars.def.debounce			=9;
+--vars.def.title			='PIR'
+vars.def.message			='Detection'
+vars.def.dur				=10
+vars.def.day_mode			=1
+vars.def.debounce			=9
 
 vars.url_growl_images 		= glob.url_pmd .. '/inc/conf/icons/'
 
@@ -187,7 +187,7 @@ vars.pirs[i].growl.group=2	--Notifications
 --------------------------------------
 i=i+1
 vars.pirs[i]			={}
-vars.pirs[i].id			=glob.but_test --430
+vars.pirs[i].id			=430
 vars.pirs[i].name		='Portail'
 vars.pirs[i].actions	={'switch', 'kodis','growl', 'indic_light', 'nab_file'}
 vars.pirs[i].masters	={456} -- 
