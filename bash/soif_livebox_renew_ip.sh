@@ -14,5 +14,5 @@ STATUS_ON=$(	curl -s "$OUT_NULL" -b "$myFileCookies" -X POST -H 'Content-Type: a
 
 
 # quit -----------------------------------------------------------------
-#closeConnection ## disconnect
+closeConnection ## disconnect
 exit 0

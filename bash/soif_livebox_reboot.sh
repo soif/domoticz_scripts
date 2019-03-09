@@ -12,5 +12,5 @@ STATUS=$(curl -s  -b "$myFileCookies" -X POST -H 'Content-Type: application/x-sa
 #echo "$STATUS"
 
 # quit -----------------------------------------------------------------
-#closeConnection ## disconnect
+closeConnection ## disconnect
 exit 0
