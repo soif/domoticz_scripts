@@ -4,7 +4,7 @@ local vars = {}
 	Thermostat script VARIABLES 
 ################################################################################################################# --]]
 
-vars.script_name	="Thermostat"		-- Name of the Script
+vars.active			=true				-- is the script active ?
 vars.temp_absent	=10					-- temperature wanted in 'absent' mode
 
 

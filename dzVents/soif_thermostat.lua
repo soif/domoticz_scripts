@@ -18,16 +18,17 @@
 	-------------------------------------------------------------
 
 ################################################################################################################### --]]
-
 local glob	=	require('soif_conf/globals')
 local vars	=	require('soif_conf/thermostat')
 local func	=	require('soif_utils')
 
+vars.script_name	="Thermostat"
+
 --vars.debug_on = true
 
 
-
 -- ### Functions #################################################################################################
+
 -----------------------------------------------------------------------------------------
 function GetDayMode(time)
 	local mode='day'
@@ -66,16 +67,18 @@ function DataHeaterListLastRepeatingState(heater_id, on_off)
 	func.EchoDebug("** Finding DATA : {var} = {on_off} ******* ")
 	local out={}
 	local continue =true
-	func.domoticz.data[var].forEach(function(item,index)
-								if continue then 										
-									if item.data == on_off then 
-										out[index]	=item.time.msAgo
-										func.EchoDebug(" * Same state {on_off} : {out[index]} ms ago");
-									else 
-										continue = false
-									end
-								end
-							end)
+	func.domoticz.data[var].forEach(
+		function(item,index)
+			if continue then 										
+				if item.data == on_off then 
+					out[index]	=item.time.msAgo
+					func.EchoDebug(" * Same state {on_off} : {out[index]} ms ago");
+				else 
+					continue = false
+				end
+			end
+		end
+	)
 	return out
 end
 
@@ -246,7 +249,7 @@ end
 
 return {
 	-- is script active ---------------------
-    active = true, -- optional
+	active = vars.active,
 	-- triggers -----------------------------
 	on = {
 		devices 	= vars.watched_devices,
