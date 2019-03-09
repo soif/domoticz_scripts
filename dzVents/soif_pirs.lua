@@ -17,28 +17,32 @@ local func	=	require('soif_utils')
 
 vars.script_name		="PIR Event"		-- Name of the Script
 vars.active				=true
---vars.debug_on			=true
 
---vars.solo_pir				=glob.but_test
+--vars.debug_on			=true
+--vars.solo_pir			=glob.but_test
 
 -- ### Functions #################################################################################################
 
-local this_pir	={};
+local this_pir	={}
 
 -----------------------------------------------------------------------------------------
 function InitPir(conf, item)
+
 	-- defaults
+	this_pir			= {}
 	this_pir.id			= conf.id			or 0
 	this_pir.name		= conf.name			or vars.def.name		or item.name or ''
 	this_pir.title		= conf.title		or vars.def.title		or this_pir.name or ''
 	this_pir.message	= conf.message		or vars.def.message		or ''
+	this_pir.icon		= conf.icon			or vars.def.icon		or ''
+	this_pir.url_icon	= conf.url_icon		or vars.def.url_icon		or ''
 	this_pir.day_mode	= conf.day_mode		or vars.def.day_mode	or 0
 	this_pir.debounce	= conf.debounce		or vars.def.debounce 	or 0
 
 	this_pir.actions	= TableDefault(conf.actions ,	vars.def.action or 'switch')
 	this_pir.devices	= TableDefault(conf.devices)
-	this_pir.dur		= TableDefault(conf.dur,		vars.def.dur 	or 1, 		this_pir.devices)
-	this_pir.masters	= TableDefault(conf.masters)	
+	this_pir.dur		= TableDefault(conf.dur,		vars.def.dur, 		this_pir.devices)
+	this_pir.masters	= TableDefault(conf.masters,	vars.def.master		)	
 
 	this_pir.growl		= TableDefault(conf.growl,	vars.def.growl)	
 	this_pir.kodi		= TableDefault(conf.kodi,	vars.def.kodi)	
@@ -65,21 +69,27 @@ function TableDefault(var, default, to_fill)
 	elseif type(to_fill)=='table' then
 		l_end =func.TableCount(to_fill)
 	end
+	
+	--Table with no to_fill
+	if (l_end == 0 and (type(var) =='table' or type(default) =='table')) then
+		var = var or {}
+		if (type(default) =='table' and not func.TableIsEmpty(default)) then
+			for k,v in pairs(default) do
+				if(not func.TableHasKey(var,k)) then
+					var[k]=v
+				end
+			end
+		end
+	else		
 
-	if (type(var) =='table' and l_end == 0) then 
-		-- var = var
-	else
-
-		--var 	= var or {}
-
+		local  value=var or default
+		-- string, with to_fill 
 		if l_end > 0 then
 			local filled={}
 			local l_start=1
-			local value=var or default
 
 			if type(var) == 'table' then
 				filled= var
-				value = default
 				l_start = func.TableCount(filled) +1 
 				l_end = l_start + l_end - func.TableCount(filled) -1
 			end
@@ -93,9 +103,10 @@ function TableDefault(var, default, to_fill)
 			else
 				var = filled		
 			end
+		-- string, with NO to_fill 
 		else
-			if type(value)=='table' then
-				var=value	
+			if type(var)=='table' then
+				--var=func.TableCopy(var)	
 			else
 				var={ value }	
 			end
@@ -211,64 +222,68 @@ function SwitchDeviceFor (device,	dur)
 
 end
 
-local query_fields={} 
 
 -----------------------------------------------------------------------------------------
 function NotifyKodi(host)
-	local p		= this_pir.kodi 			or vars.def.kodi or {}
+	local p		= this_pir.kodi 			or {}
 
 	p.title		= this_pir.kodi.title		or this_pir.title	or ''
 	p.message	= this_pir.kodi.message		or this_pir.message	or ''
-	p.image		= this_pir.kodi.image		or this_pir.image 	or this_pir.growl.file or ''
+	p.image		= this_pir.kodi.icon		or this_pir.icon 	or this_pir.growl.icon or ''
 	p.time		= this_pir.kodi.time		or 10
-
+	
+	p.image		=PrefixIcon( p.icon_url,  p.image )
+	p.icon_url	=nil	-- (just in case) be sure to NOT pass it to Url, else PMD will ALSO append it to icon
+	
 	p.title			=func.UrlEncode(p.title)
 	p.message		=func.UrlEncode(p.message)
+	p.image			=func.UrlEncode(p.image)
 
-	if (p.image ~='') then 
-		p.image=vars.url_growl_images .. p.image .. '.png'
-		p.image=func.UrlEncode(p.image)
-	end
-
-	_buildQueryFields(p, 	'kodi')
-	local query	=_aueryToString(query_fields)
-	local url 	= glob.url_pmd .. '/action?type=xbmc&server='.. host .. query
+	local url 	= glob.url_pmd .. '/action?type=xbmc&server='.. host ..  ArrayToUrlQuery(p)
 
 	func.EchoDebug("+ Url: " .. url .. " " )
+	--func.EchoDebug(p)
 	TriggerUrl(url)
+end
+
+
+-----------------------------------------------------------------------------------------
+function PrefixIcon( prefix_url, icon)
+	if (not func.isEmpty(icon) and  not func.isEmpty(prefix_url)) then
+		icon = prefix_url .. icon 
+	end
+	return icon
 end
 
 
 -----------------------------------------------------------------------------------------
 function NotifyGrowl()
-	local p		= this_pir.growl			or vars.def.growl or {}
-	p.title		= this_pir.growl.title		or this_pir.title
-	p.message	= this_pir.growl.message	or this_pir.message
-
-	p.title			=func.UrlEncode(p.title)
-	p.message		=func.UrlEncode(p.message)
+	local p		= this_pir.growl			or {}
+	p.title		= this_pir.growl.title		or this_pir.title	or ''
+	p.message	= this_pir.growl.message	or this_pir.message	or ''
+	p.icon		= PrefixIcon( p.icon_url,  p.icon )
+	p.icon_url	=nil	-- be sure to NOT pass it to Url, else PMD will ALSO append it to icon
 	
-	_buildQueryFields(p, 'growl')
+	p.title		=func.UrlEncode(p.title)
+	p.message	=func.UrlEncode(p.message)
+	p.icon		=func.UrlEncode(p.icon)
 
-	local query=_aueryToString(query_fields)
-	local url = glob.url_pmd .. '/action?type=growl'.. query;
+	local url = glob.url_pmd .. '/action?type=growl'.. ArrayToUrlQuery(p)
 
 	func.EchoDebug("+ Url: " .. url .. " " )
+	--func.EchoDebug(p)
 	TriggerUrl(url)
 end
 
 -----------------------------------------------------------------------------------------
-function _buildQueryFields(params)
-		for key,value in pairs(params) do
-			_addToQuery(key,	value)
+function ArrayToUrlQuery(params)
+	local query_fields={} 
+	for key,value in pairs(params) do
+		if (value ~=nil ) then
+			query_fields[key] = value
 		end
-end
-
------------------------------------------------------------------------------------------
-function _addToQuery(name, value)
-	if (value ~=nil ) then
-		query_fields[name] = value
 	end
+	return _aueryToString(query_fields)
 end
 
 -----------------------------------------------------------------------------------------
@@ -385,10 +400,9 @@ return {
    },
 	execute = function(domoticz_obj, item)
 		glob.debug_on = vars.debug_on
-		
-		func.EchoDebug(item.idx)
 
 		func.domoticz = domoticz_obj		--	Make Domoticz global
+
 		local pir= GetPirFromId(item.idx)
 		InitPir(pir, item)	-- current pir defaults 
 
@@ -409,7 +423,6 @@ return {
 
 		--handle debounce time	----------------------------------	
 		local do_process=true
-
 		if (this_pir.debounce > 0) then
 			
 			-- init persistent data
