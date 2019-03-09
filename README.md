@@ -1,11 +1,12 @@
-# Domoticz Scripts
+# Scripts For Domoticz
 
-Various Scripts to use in Domoticz
+my personnal script collection.
 
+## dzVents Scripts
+  
+  *Various Scripts to use inside Domoticz*
 
-## dzVents
-
-### Featured scripts
+### Featured dzVents scripts
 - **soif_thermostat** : handle heaters  using a temperaure sensor, a (mode) selector and a (relay) switch, with differents temperature per room/hours, or when absent.
 - **soif_pirs** : handle PIRs sensors, to trigger one of mutiple devices, with optionnal notifications (using PMD), durations times, debounce time, period, master switches,....
 
@@ -21,6 +22,27 @@ Various Scripts to use in Domoticz
 - Cutomize the `soif_conf/` files according to your own needs
 
 
+---------
+
+## Bash Scripts
+
+  *Generic bash scripts that can be used directly of called from Domoticz*
+
+### Featured Bash scripts
+- **soif_hg612_XXX** : (Huawei HG612 Modem) Various scripts to reboot, resync ADSL, or get JSON statistics
+
+- **soif_livebox_XXX** : (Orange Livebox Modem) Various scripts to reboot, renew Public IP, or get JSON statistics
+- **soif_pfsense_ppoe_reload** : (pfSense Firewall) restart the PPoE conection to renew the public IP
+
+### Requirements
+- bash
+
+### Installation
+- rename `bash/soif_conf.conf.sample/`  to  `bash/soif_conf.conf`  
+- Cutomize the `bash/soif_conf.conf` files according to your own needs
+
+
+---------
 
 ## Licence
 
