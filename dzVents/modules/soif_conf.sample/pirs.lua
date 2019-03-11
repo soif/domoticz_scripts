@@ -56,11 +56,7 @@ vars.def.message			='Detection'
 vars.def.dur				=10
 vars.def.day_mode			=1
 vars.def.debounce			=9
-
-vars.url_growl_images 		= glob.url_pmd .. '/inc/conf/icons/'
-
 vars.def.icon				='pir.png'
-
 
 vars.def.growl				={}
 vars.def.growl.icon_url		=glob.url_pmd .. '/inc/conf/icons/'		-- 'http://domo.lo.lo/inc/conf/icons/'
