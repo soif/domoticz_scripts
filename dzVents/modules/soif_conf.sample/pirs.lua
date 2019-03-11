@@ -7,6 +7,13 @@ local	i	=0
 	PIRS variables
 ##################################################################################### --]]
 
+vars.active				=true
+vars.script_name		="PIR Event"		-- Name of the Script
+vars.debug_on			=true
+--vars.solo_pir			=glob.but_test
+
+
+
 vars.indicator_idx			=342		-- (int) 		idx of the Indicator Light to trigger
 vars.indicator_dur			=10			-- (seconds)	Duration to show Indicator light
 vars.indicator_count		=7			-- (int)		Flash Count to show Indicator light
@@ -14,7 +21,6 @@ vars.indicator_flash_color	='red'		-- (str)		alias color of the Indicator light 
 vars.indicator_light_color	='purple'	-- (str)		alias color of the Indicator light when lighting
 
 
---vars.solo_pir				=430 		-- 425=poule 430 portail 433=terrass	-- If defined, only this device is shown in debug mode
 
 
 --[[ #####################################################################################
@@ -41,11 +47,8 @@ All properties are optionals, except the 'id'
 
 --]]
 
-
-
 -- Defaults ###############################################################################
 -- theses default values will be stored in your PIRs objects properties, when not set.
-
 
 vars.def					={}
 --vars.def.title			='PIR'
@@ -195,7 +198,7 @@ vars.pirs[i].devices	={272} -- reverb
 vars.pirs[i].debounce	=90
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.icon	="pir_portail.png"
-vars.pirs[i].growl.group=3	--Alerts
+vars.pirs[i].growl.group=2	--Notif
 vars.pirs[i].nabaztag	='pir'
 
 --------------------------------------
@@ -225,7 +228,6 @@ vars.pirs[i].nabaztag	='facteur'
 
 
 
--- END Variables ################################################################################
 
 ------------------------------------------------------------
 -- uncomment for testing -----------------------------------
@@ -233,27 +235,39 @@ vars.pirs[i].nabaztag	='facteur'
 
 --[[ 
 
-
 i=i+1
 
 vars.pirs[i]				={}
 vars.pirs[i].id				=glob.but_test --glob.but_test
---vars.pirs[i].name			='Test 2 Xiaomi Button'
-vars.pirs[i].message		="Je viens d'appuyer sur le bouton"
+vars.pirs[i].name			='Maman Fait Dodo'
+vars.pirs[i].message		="Mais Pourquoi donc?"
 vars.pirs[i].actions		={'growl','kodi'}	-- 'switch', 'nab_file', 'kodi', 'kodis','indic_flash'
 vars.pirs[i].devices		={271} -- Salon2, 271=Table Sej, 415=bureau
+vars.pirs[i].debounce		=2
+vars.pirs[i].dur			=2
+vars.pirs[i].day_mode		=0
+vars.pirs[i].icon			="pir_terrasse.png"
+vars.pirs[i].growl			={}
+vars.pirs[i].growl.title	="Grow Title"
+--vars.pirs[i].growl.group=3	--Alerts
 --vars.pirs[i].masters		={387} -- 387=Salon1 
 --vars.pirs[i].dur			={5}
-vars.pirs[i].dur			=1
-vars.pirs[i].day_mode		=0
-vars.pirs[i].nabaztag		='pir'
-vars.pirs[i].debounce		=2
-vars.pirs[i].growl			={}
-vars.pirs[i].growl.icon		=",pir_hall.png"
-vars.pirs[i].growl.title	=",ALLO2"
 --vars.pirs[i].growl.priority="high"
-vars.pirs[i].growl.group=3	--Alerts
+--vars.pirs[i].nabaztag		='pir'
+--vars.pirs[i].icon			="pir_reverbere.png"
+--vars.pirs[i].growl.icon		="pir_hall.png"
+
+
 
 --]]
 
+
+
+
+
+
+
+
+
+-- END Variables ################################################################################
 return vars
