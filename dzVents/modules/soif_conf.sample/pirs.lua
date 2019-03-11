@@ -9,7 +9,7 @@ local	i	=0
 
 vars.active				=true
 vars.script_name		="PIR Event"		-- Name of the Script
-vars.debug_on			=true
+--vars.debug_on			=true
 --vars.solo_pir			=glob.but_test
 
 
