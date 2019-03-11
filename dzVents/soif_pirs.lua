@@ -13,13 +13,7 @@ local glob	=	require('soif_conf/globals')
 local vars	=	require('soif_conf/pirs')
 local func	=	require('soif_utils')
 
----- Vars --------------------------------------------------------------------------------
 
-vars.script_name		="PIR Event"		-- Name of the Script
-vars.active				=true
-
---vars.debug_on			=true
---vars.solo_pir			=glob.but_test
 
 -- ### Functions #################################################################################################
 
@@ -229,17 +223,18 @@ function NotifyKodi(host)
 
 	p.title		= this_pir.kodi.title		or this_pir.title	or ''
 	p.message	= this_pir.kodi.message		or this_pir.message	or ''
-	p.image		= this_pir.kodi.icon		or this_pir.icon 	or this_pir.growl.icon or ''
+	--p.image		= this_pir.kodi.icon	or this_pir.icon 	or this_pir.growl.icon or ''
+	p.icon		= this_pir.kodi.icon		or this_pir.icon 	or this_pir.growl.icon or ''
 	p.time		= this_pir.kodi.time		or 10
 	
-	p.image		=PrefixIcon( p.icon_url,  p.image )
+	p.icon		=PrefixIcon( p.icon_url,  p.icon )
 	p.icon_url	=nil	-- (just in case) be sure to NOT pass it to Url, else PMD will ALSO append it to icon
 	
 	p.title			=func.UrlEncode(p.title)
 	p.message		=func.UrlEncode(p.message)
-	p.image			=func.UrlEncode(p.image)
+	p.icon			=func.UrlEncode(p.icon)
 
-	local url 	= glob.url_pmd .. '/action?type=xbmc&server='.. host ..  ArrayToUrlQuery(p)
+	local url 	= glob.url_pmd .. '/action?type=kodi&server='.. host ..  ArrayToUrlQuery(p)
 
 	func.EchoDebug("+ Url: " .. url .. " " )
 	--func.EchoDebug(p)
@@ -400,7 +395,6 @@ return {
    },
 	execute = function(domoticz_obj, item)
 		glob.debug_on = vars.debug_on
-
 		func.domoticz = domoticz_obj		--	Make Domoticz global
 
 		local pir= GetPirFromId(item.idx)
