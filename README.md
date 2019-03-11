@@ -4,7 +4,7 @@ my personnal script collection.
 
 ## dzVents Scripts
   
-  *Various Scripts to use inside Domoticz*
+  *Various Scripts to use inside Domoticz.*
 
 ### Featured dzVents scripts
 - **soif_thermostat** : handle heaters  using a temperaure sensor, a (mode) selector and a (relay) switch, with differents temperature per room/hours, or when absent.
@@ -26,7 +26,7 @@ my personnal script collection.
 
 ## Bash Scripts
 
-  *Generic bash scripts that can be used directly of called from Domoticz*
+  *Generic bash scripts that can be used directly, or called from Domoticz.*
 
 ### Featured Bash scripts
 - **soif_hg612_XXX** : (Huawei HG612 Modem) Various scripts to reboot, resync ADSL, or get JSON statistics
