@@ -237,12 +237,7 @@ vars.pirs[i].nabaztag	='facteur'
 --[[ 
 
 
-
---]]
-
-
 i=i+1
-
 vars.pirs[i]				={}
 vars.pirs[i].id				=glob.but_test --glob.but_test
 vars.pirs[i].name			='Maman Fait Dodo'
@@ -264,8 +259,7 @@ vars.pirs[i].growl.title	="Grow Title"
 --vars.pirs[i].growl.icon		="pir_hall.png"
 
 
-
-
+--]]
 
 
 
