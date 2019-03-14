@@ -29,7 +29,7 @@ function InitPir(conf, item)
 	this_pir.title		= conf.title		or vars.def.title		or this_pir.name or ''
 	this_pir.message	= conf.message		or vars.def.message		or ''
 	this_pir.icon		= conf.icon			or vars.def.icon		or ''
-	this_pir.url_icon	= conf.url_icon		or vars.def.url_icon		or ''
+	this_pir.icon_url	= conf.icon_url		or vars.def.icon_url	or ''
 	this_pir.day_mode	= conf.day_mode		or vars.def.day_mode	or 0
 	this_pir.debounce	= conf.debounce		or vars.def.debounce 	or 0
 
@@ -221,14 +221,14 @@ end
 function NotifyKodi(host)
 	local p		= this_pir.kodi 			or {}
 
-	p.title		= this_pir.kodi.title		or this_pir.title	or ''
-	p.message	= this_pir.kodi.message		or this_pir.message	or ''
-	--p.image		= this_pir.kodi.icon	or this_pir.icon 	or this_pir.growl.icon or ''
-	p.icon		= this_pir.kodi.icon		or this_pir.icon 	or this_pir.growl.icon or ''
+	p.title		= this_pir.kodi.title		or this_pir.title		or ''
+	p.message	= this_pir.kodi.message		or this_pir.message		or ''
+	p.icon		= this_pir.kodi.icon		or this_pir.icon 		or ''
 	p.time		= this_pir.kodi.time		or 10
+	local icon_url= this_pir.kodi.icon_url	or this_pir.icon_url 	or ''
 	
-	p.icon		=PrefixIcon( p.icon_url,  p.icon )
-	p.icon_url	=nil	-- (just in case) be sure to NOT pass it to Url, else PMD will ALSO append it to icon
+	p.icon		=PrefixIcon( icon_url,  p.icon )
+	-- p.icon_url	=nil	-- (just in case) be sure to NOT pass it to Url, else PMD will ALSO append it to icon
 	
 	p.title			=func.UrlEncode(p.title)
 	p.message		=func.UrlEncode(p.message)
@@ -256,8 +256,9 @@ function NotifyGrowl()
 	local p		= this_pir.growl			or {}
 	p.title		= this_pir.growl.title		or this_pir.title	or ''
 	p.message	= this_pir.growl.message	or this_pir.message	or ''
-	p.icon		= PrefixIcon( p.icon_url,  p.icon )
-	p.icon_url	=nil	-- be sure to NOT pass it to Url, else PMD will ALSO append it to icon
+	p.icon		= this_pir.growl.icon		or this_pir.icon 		or ''
+	local icon_url= this_pir.growl.icon_url	or this_pir.icon_url 	or ''
+	p.icon		=PrefixIcon( icon_url,  p.icon )
 	
 	p.title		=func.UrlEncode(p.title)
 	p.message	=func.UrlEncode(p.message)
