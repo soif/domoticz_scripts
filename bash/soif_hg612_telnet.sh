@@ -46,5 +46,4 @@ if  true ; then
 #) | telnet "$HOST" > "$HGFILE" 2>&1
 #) | telnet "$HOST" 2>&1 | tee "$HGFILE"
 	echo
-	exit 0
 fi
