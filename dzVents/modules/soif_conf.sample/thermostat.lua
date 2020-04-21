@@ -28,7 +28,7 @@ vars.thermostats = {
 		['uservar']	=3,
 	},
 	{	-- Bureau
-		['sensor']	=352,
+		['sensor']	=529,
 		['heaters']	={324},	-- ,124 r.Bureau_433
 		['selector']=116,
 		['uservar']	=2,
@@ -85,7 +85,7 @@ vars.selectors_levels={
 		['level']		=30,
 		['type']		='fixed',
 		['name']		='Confort',
-		['temperature']	=24,
+		['temperature']	=23,
 	},
 	{
 		['level']		=40,
