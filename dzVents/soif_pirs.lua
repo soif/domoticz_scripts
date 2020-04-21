@@ -32,6 +32,15 @@ function InitPir(conf, item)
 	this_pir.icon_url	= conf.icon_url		or vars.def.icon_url	or ''
 	this_pir.day_mode	= conf.day_mode		or vars.def.day_mode	or 0
 	this_pir.debounce	= conf.debounce		or vars.def.debounce 	or 0
+	this_pir.min_on		= conf.min_on		or vars.def.min_on 		or 0
+
+	this_pir.trigger	= conf.trigger
+	if this_pir.trigger == nil	then	this_pir.trigger=vars.def.trigger	end
+	if this_pir.trigger == nil	then	this_pir.trigger=true	end
+
+	this_pir.reset		= conf.reset
+	if this_pir.reset == nil	then	this_pir.reset=vars.def.reset	end
+	if this_pir.reset == nil	then	this_pir.reset=true	end
 
 	this_pir.actions	= TableDefault(conf.actions ,	vars.def.action or 'switch')
 	this_pir.devices	= TableDefault(conf.devices)
@@ -43,10 +52,11 @@ function InitPir(conf, item)
 
 	-- set all cases when the item is active
 	this_pir.is_active		=false
-	this_pir.is_active_name	='[OFF]'
-	if ( (item.active or (item.switchType=='Selector' and item.lastLevel >9) ) ) then		
+	if this_pir.trigger then this_pir.is_active_name	='[OFF]' else this_pir.is_active_name	='[ON]' end
+	
+	if ( (item.active and this_pir.trigger)  or (not item.active and not this_pir.trigger)  or (item.switchType=='Selector' and item.lastLevel >9) ) then		
 		this_pir.is_active		=true
-		this_pir.is_active_name='[ON] '
+		if this_pir.trigger then this_pir.is_active_name	='[ON]' else this_pir.is_active_name	='[OFF]' end
 	end
 
 	--func.EchoDebugLine()
@@ -393,6 +403,8 @@ return {
    },
    data = {
 		upd_dates	={ initial = {} },
+		last_on		={ initial = {} },	
+--		last_off	={ initial = {} },	
    },
 	execute = function(domoticz_obj, item)
 		glob.debug_on = vars.debug_on
@@ -404,7 +416,7 @@ return {
 		-- Solo Debug  --------------------------		
 		if (vars.solo_pir ~= nil and  vars.solo_pir > 0) then
 			if ( vars.solo_pir == item.idx ) then
-				this_pir.debounce =7200
+				--this_pir.debounce =7200
 			else
 				glob.debug_on = false
 			end
@@ -416,8 +428,9 @@ return {
 		func.ScriptExecuteStart(vars.script_name, vars.script_title)
 		func.EchoDebugLine()
 
-		--handle debounce time	----------------------------------	
 		local do_process=true
+
+		--handle debounce time	----------------------------------	
 		if (this_pir.debounce > 0) then
 			
 			-- init persistent data
@@ -460,7 +473,33 @@ return {
 				-- do_process = false
 			end
 		end
-		
+
+		-- handle last time	----------------------------------
+		if this_pir.min_on then
+			-- init persistent data
+			-- if func.domoticz.data.last_on[item.idx] == nil  or func.domoticz.data.last_off[item.idx] == nil  then
+			if (func.domoticz.data.last_on[item.idx] == nil)  then
+				func.domoticz.data.last_on[item.idx] =func.domoticz.time.dDate
+				--func.domoticz.data.last_off[item.idx] =func.domoticz.time.dDate
+			end
+
+			-- bypass is too recent			
+			if ( this_pir.is_active ) then
+				local elapsed = func.domoticz.time.dDate  - func.domoticz.data.last_on[item.idx]
+				if elapsed < this_pir.min_on  then
+					do_process = false
+					func.EchoDebug("Minimum ON time ("..this_pir.min_on.."s) not reached! Elapsed: " .. elapsed.."s.")
+				end
+			end
+						
+
+			-- save laste date
+			if item.active then
+				func.domoticz.data.last_on[item.idx] = func.domoticz.time.dDate
+			else
+				--func.domoticz.data.last_off[item.idx] =func.domoticz.time.dDate
+			end
+		end	
 
 		-- main process	---------------------------------------------
 		if ( this_pir.is_active ) then
@@ -476,11 +515,17 @@ return {
 					end
 				end
 				--reset PIR state
-				item.switchOff().silent().afterSec(1)		
+				if this_pir.reset then
+					if this_pir.trigger then
+						item.switchOff().silent().afterSec(1)	
+					else
+						item.switchOn().silent().afterSec(1)	
+					end
+				end		
 			end
 		else
 			local last = func.domoticz.time.dDate - func.domoticz.data.upd_dates[item.idx]
-			func.EchoDebug("OFF event ignored !!! ( Last event trigered: ".. last  ..' sec ago)' )
+			func.EchoDebug(this_pir.is_active_name.." event ignored !!! ( Last event trigered: ".. last  ..' sec ago)' )
 		end
 		
 		-- END --------------------------
