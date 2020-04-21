@@ -10,13 +10,15 @@ declare -A SOIF_GLOB
 SOIF_GLOB[h612_host]=modem.lo.lo		# H612 hostname or IP
 SOIF_GLOB[h612_user]=admin				# H612 Admin UserName
 SOIF_GLOB[h612_pass]=admin				# H612 Admin Password
+SOIF_GLOB[h612_post]="$(dirname $0)/soif_pbx_asterisk_restart.sh 180" # Script to execute after 
 
 
 # -------------------------------------------------------------------------------------- #
 # Livebox Modem 
 # -------------------------------------------------------------------------------------- #
 SOIF_GLOB[livebox_host]=10.2.11.3		# Livebox hostname or IP
-SOIF_GLOB[livebox_pass]=YOUR_PASS		# Livebox Admin Password
+SOIF_GLOB[livebox_pass]=YOUR_PASS        # Livebox Admin Password
+#SOIF_GLOB[h612_post]="$(dirname $0)/soif_pbx_asterisk_restart.sh 180" # Script to execute after 
 
 # -------------------------------------------------------------------------------------- #
 # Pfsense
@@ -24,6 +26,15 @@ SOIF_GLOB[livebox_pass]=YOUR_PASS		# Livebox Admin Password
 SOIF_GLOB[pfsense_host]=gate.lo.lo		# Pfsense hostname or IP
 SOIF_GLOB[pfsense_user]=net				# Pfsense user
 SOIF_GLOB[pfsense_ppoe_if]=wan			# Pfsense PPOE Interface	(wan, opt1, ...)
+
+SOIF_GLOB[pfsense_post]="$(dirname $0)/soif_pbx_asterisk_restart.sh 10" # Script to execute after 
+
+
+# -------------------------------------------------------------------------------------- #
+# pbx (asterisk)
+# -------------------------------------------------------------------------------------- #
+SOIF_GLOB[pbx_host]=pbx.lo.lo		# Pbx hostname or IP
+SOIF_GLOB[pbx_user]=root			# Pbx root user
 
 
 
