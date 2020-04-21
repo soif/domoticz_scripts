@@ -95,12 +95,12 @@ function SwitchHeaters(heaters , action)
 		local delay		= offset + math.random(rand_min, rand_max)
 
 		if action == false then
-			func.Echo("Will Turn Heater : ({heater.id}) '{heater.name}'	OFF after '{delay} seconds' ",true)
+			func.Echo("Will Turn Heater : ({heater.id}) '{heater.name}' OFF after '{delay} seconds' ",true)
 			--func.EchoDebug("Switch {heater.name} OFF after [k={k}] {offset} +{rand_min}/{rand_max} = {delay} sec")
 			heater.switchOff().afterSec(delay)
 			DataHeaterStore(heater_id, false)
 		elseif action ==true then
-			func.Echo("Will Turn Heater : ({heater.id}) '{heater.name}'	ON after '{delay} seconds' ",true)
+			func.Echo("Will Turn Heater : ({heater.id}) '{heater.name}' ON after '{delay} seconds' ",true)
 			--func.EchoDebug("Switch {heater.name} ON after {k} {delay} sec")
 			heater.switchOn().afterSec(delay)
 			DataHeaterStore(heater_id, true)
@@ -289,6 +289,7 @@ return {
 			ProcessThermSensor(item.id)
 		elseif type == 'selector' then 	
 			ProcessThermSelector(item.id)
+		--todo
 		elseif type == 'selector' then 	
 			ProcessThermTimer()
 		end
