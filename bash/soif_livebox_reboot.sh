@@ -18,4 +18,11 @@ STATUS=$(curl -s  -b "$myFileCookies" -X POST -H 'Content-Type: application/x-sa
 
 # quit -----------------------------------------------------------------
 closeConnection ## disconnect
+
+# Execute post script --------------------------------------------------------------------
+POST=${SOIF_GLOB[livebox_post]}
+if [[ -n $POST ]] ; then
+	$POST &>/dev/null &
+fi
+
 exit 0

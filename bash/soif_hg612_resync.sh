@@ -6,3 +6,11 @@
 
 COMMAND="xdslcmd start --up"
 source `dirname $0`/soif_hg612_telnet.sh
+
+# Execute post script --------------------------------------------------------------------
+POST=${SOIF_GLOB[h612_post]}
+if [[ -n $POST ]] ; then
+	$POST &>/dev/null &
+fi
+
+exit 0

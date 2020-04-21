@@ -21,4 +21,12 @@ IF=wan
 ACT="interface reload $IF"
 LOG="External Dzvent Script soif_pfsense is restarting PPPoE on the $IF Interface......."
 ssh ${USER}@${HOST} "/usr/local/sbin/pfSctl -c '$ACT';	/usr/bin/logger -t soif '$LOG'; exit 0; " 
+
+
+# Execute post script --------------------------------------------------------------------
+POST=${SOIF_GLOB[pfsense_post]}
+if [[ -n $POST ]] ; then
+	$POST &>/dev/null &
+fi
+
 exit 0
