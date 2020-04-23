@@ -24,7 +24,7 @@ local func	=	require('soif_utils')
 
 vars.script_name	="Thermostat"
 
---vars.debug_on = true
+vars.debug_on = true
 
 
 -- ### Functions #################################################################################################
@@ -64,7 +64,7 @@ end
 -------------------------------------------------------------------------------------------
 function DataHeaterListLastRepeatingState(heater_id, on_off)
 	local var ='states_heater_' .. heater_id
-	func.EchoDebug("** Finding DATA : {var} = {on_off} ******* ")
+	func.EchoDebug("* Finding DATA : {var} = {on_off} ******* ")
 	local out={}
 	local continue =true
 	func.domoticz.data[var].forEach(
@@ -72,7 +72,7 @@ function DataHeaterListLastRepeatingState(heater_id, on_off)
 			if continue then 										
 				if item.data == on_off then 
 					out[index]	=item.time.msAgo
-					func.EchoDebug(" * Same state {on_off} : {out[index]} ms ago");
+					func.EchoDebug(" * - Same state '{on_off}' : {out[index]/1000} sec ago");
 				else 
 					continue = false
 				end
@@ -83,29 +83,73 @@ function DataHeaterListLastRepeatingState(heater_id, on_off)
 end
 
 -------------------------------------------------------------------------------------------
+function SwitchThermostatDevices(heaters, action, airconds, mode)
+	if ( mode == 'hot' ) then
+		SwitchHeaters(heaters , action)
+	end
+	SwitchAirConds(airconds, action, mode)
+
+end
+
+-------------------------------------------------------------------------------------------
+function SwitchAirConds(airconds, action, mode)
+	if (airconds == nil) then
+		return false
+	end
+	for k,aircond_id in pairs(airconds.ids) do 
+		local aircond	= func.domoticz.devices(aircond_id)
+		local delay		= GetRandomDelay(aircond_id, k)
+		local level
+		if action==false then
+			 level=airconds.off[k]
+			 func.Echo("Will Turn AirCond : ({aircond.id}) '{aircond.name}' OFF after '{delay} seconds' ",true)
+		elseif action ==true then
+			if mode == 'cold' then
+				level=airconds.cold[k]
+			else
+				level=airconds.hot[k]
+			end
+			func.Echo("Will Turn AirCond : ({aircond.id}) '{aircond.name}' to level {level} '{aircond.levelNames[ level / 10 +1 ]}' after '{delay} seconds' ",true)
+		end
+		aircond.switchSelector(level).afterSec(delay)
+		DataHeaterStore(aircond_id, action)
+	end
+end
+
+-------------------------------------------------------------------------------------------
 function SwitchHeaters(heaters , action)
+	if (heaters == nil) then
+		return false
+	end
+
 	local count_therms = #vars.thermostats + 4
 	--func.EchoDebug(heaters)
 	for k,heater_id in pairs(heaters) do 
 		local heater	= func.domoticz.devices(heater_id)
-		local rand_min	= (k -1)	* 2				-- 0	2	4
-		local rand_max	= k 		* count_therms	-- 10	20	30
-		local offset	= (k -1)	* count_therms	-- 0	10	20
-		math.randomseed( tonumber(tostring(os.time()):reverse():sub(1,6)) + heater_id*100 )
-		local delay		= offset + math.random(rand_min, rand_max)
+		local delay		= GetRandomDelay(heater_id, k)
 
 		if action == false then
 			func.Echo("Will Turn Heater : ({heater.id}) '{heater.name}' OFF after '{delay} seconds' ",true)
 			--func.EchoDebug("Switch {heater.name} OFF after [k={k}] {offset} +{rand_min}/{rand_max} = {delay} sec")
 			heater.switchOff().afterSec(delay)
-			DataHeaterStore(heater_id, false)
 		elseif action ==true then
 			func.Echo("Will Turn Heater : ({heater.id}) '{heater.name}' ON after '{delay} seconds' ",true)
 			--func.EchoDebug("Switch {heater.name} ON after {k} {delay} sec")
 			heater.switchOn().afterSec(delay)
-			DataHeaterStore(heater_id, true)
 		end
+		DataHeaterStore(heater_id, action)
 	end
+end
+
+-------------------------------------------------------------------------------------------
+function GetRandomDelay(device_id, k)
+	local count_therms = #vars.thermostats + 4
+	local rand_min	= (k -1)	* 2				-- 0	2	4
+	local rand_max	= k 		* count_therms	-- 10	20	30
+	local offset	= (k -1)	* count_therms	-- 0	10	20
+	math.randomseed( tonumber(tostring(os.time()):reverse():sub(1,6)) + device_id*100 )
+	local delay		= offset + math.random(rand_min, rand_max)
+	return delay
 end
 
 -----------------------------------------------------------------------------------------
@@ -140,13 +184,25 @@ function ProcessThermSensor(sensor_id)
 	local selector		=	func.domoticz.devices(therm.selector);
 	local sel_params	= 	SelectArrayChild('selectors_levels','level',	selector.level)
 	local heaters		=	therm.heaters
-	local first_heater	=	func.domoticz.devices(heaters[1])
-	local cur_state		=	first_heater.active
+	local airconds		=	therm.airconds
+	local first_heater
+	local cur_state	
+	if heaters ~= nil then
+		first_heater	=	func.domoticz.devices(heaters[1])
+		cur_state		=	first_heater.active
+	else
+		first_heater	=	func.domoticz.devices(airconds.ids[1])
+		cur_state		=	false
+		if first_heater.level ~= airconds.off[i]  then
+			cur_state	=  true
+		end
+	end
+	
 	local new_state		=	cur_state
 	local sensor_temperature=func.Round(sensor.temperature,2)
 
 	func.EchoDebug("=> Process Temp.  Sensor '{sensor.name}' ({sensor_id})")
-	func.EchoDebug("Current Temperature : {sensor_temperature}			Heater State: {cur_state}")
+	func.EchoDebug("Current Temperature : {sensor_temperature}     Target ( {first_heater.id} ) State: {cur_state}")
 	local temp_wanted	= 	GetWantedTemperature(therm.uservar,sel_params)
 	
 	if temp_wanted == 999 then
@@ -161,15 +217,23 @@ function ProcessThermSensor(sensor_id)
 
 	
 	-- Temperature is reached ?
-	local diff 			= tonumber(temp_wanted) - sensor_temperature	
-	func.EchoDebug("Differ. Temperature : {diff}	(Error correction {".. vars.deviation .."} ) ")
+	if sel_params.mode == nil	then	sel_params.mode='hot'	end
+	local diff=0
+	if ( sel_params.mode =='cold' ) then
+		diff 			= sensor_temperature - tonumber(temp_wanted)	
+	else
+		diff 			= tonumber(temp_wanted) - sensor_temperature
+	end
 
-	-- do we need to change ?
+	func.EchoDebug("Diff. Temperature : {diff}   (Error correction {".. vars.deviation .."} ) ")
+
+	-- do we need to change -----?
+
 	if (diff - vars.deviation) > 0  then --or (diff + vars.deviation) < 0
-		func.EchoDebug("COLD, nedd to Switch ON")
+		func.EchoDebug("Not enought ".. sel_params.mode .." , we need to Switch ON")
 		new_state = true
 	else
-		func.EchoDebug("HOT, nedd to Switch OFF")
+		func.EchoDebug("Too ".. sel_params.mode ..", we need to Switch OFF")
 		new_state = false
 	end
 
@@ -180,30 +244,34 @@ function ProcessThermSensor(sensor_id)
 	if count_same_state > 0 then 
 		local last_changed		= state_dates[1] 				or  0	--ms
 		local oldest_changed	= state_dates[count_same_state] or 0	--ms
-		func.EchoDebug("History has {count_same_state} event : last = {last_changed/1000} s, 	oldest : {oldest_changed/1000} s")
+		func.EchoDebug("History has {count_same_state} event : last = {last_changed/1000} s, oldest = {oldest_changed/1000} s")
 		
-		-- do we have to resend at the end of resend_dur
-		if (oldest_changed/(60*1000) > vars.resend_dur) and (vars.resend_dur > 0) then
-			func.EchoDebug("Oldest event is older than "..vars.resend_dur.." min ==> RESENDING OLDEST" )
-			SwitchHeaters(heaters, new_state)
-			return true
-		end
 
-		-- resending		
+		-- repeating		
 		if count_same_state < vars.resent_count then
 			func.EchoDebug("State has been sent less than "..vars.resent_count.." times. Can we resend now?" )
 			if last_changed/1000 > vars.resent_hold then
-				func.EchoDebug("Last State is older than "..vars.resent_hold.." sec ==> RESENDING LAST" )
-				SwitchHeaters(heaters, new_state)
+				func.EchoDebug("Last State is older than "..vars.resent_hold.." sec ==> REPEATING LAST" )
+				SwitchThermostatDevices(heaters, new_state, airconds, sel_params.mode)
 			else
 				func.EchoDebug("NO, we have to wait longer	==> CANCEL " )
 			end	
 		else
 			func.EchoDebug("Resent count has been reached ==> CANCEL " )
 		end
+
+		-- do we have to resend at the end of resend_dur
+		if (last_changed/(60*1000) > vars.resend_dur) and (vars.resend_dur > 0) then
+			func.EchoDebug("Latest event is older than "..vars.resend_dur.." min ==> RESENDING LAST" )
+			SwitchThermostatDevices(heaters, new_state, airconds, sel_params.mode)
+			return true
+		end
+
+
+
 	else
-		func.EchoDebug("Not Past events with the same state => Switching to {new_state}")
-		SwitchHeaters(heaters, new_state)
+		func.EchoDebug("No Past events with the same state => Switching to {new_state}")
+		SwitchThermostatDevices(heaters, new_state, airconds, sel_params.mode)
 	end
 end
 
@@ -283,14 +351,14 @@ return {
 			type='timer'
 		end
 
-		func.EchoDebug("Triggered by '{item.name}' ({item.idx})		Type: {type}")
+		func.EchoDebug("Triggered by '{item.name}' ({item.idx})           Type: {type}")
 		
 		if type == 'sensor' then
 			ProcessThermSensor(item.id)
 		elseif type == 'selector' then 	
 			ProcessThermSelector(item.id)
 		--todo
-		elseif type == 'selector' then 	
+		elseif type == 'timer' then 	
 			ProcessThermTimer()
 		end
 		--func.EchoDebug(domoticz.time)
