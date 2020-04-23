@@ -7,15 +7,17 @@ my personnal script collection.
   *Various Scripts to use inside Domoticz.*
 
 ### Featured dzVents scripts
-- **soif_thermostat** : handle heaters  using a temperaure sensor, a (mode) selector and a (relay) switch, with differents temperature per room/hours, or when absent.
+- **soif_thermostat** : handle heaters and/or air conditionners  using a temperature sensor, a (mode) selector and a (relay) switch, with differents temperature per room/hours, or when absent.
 - **soif_pirs** : handle PIRs sensors, to trigger one of mutiple devices, with optionnal notifications (using PMD), durations times, debounce time, period, master switches,....
 
 
 ### Requirements
+
 - Domoticz
 - phpMyDomo (needed for some scripts using pmd actions)
 
 ### Installation
+
 - copy the desired scripts into `/domoticz_dir/dzVents/scripts/` 
 - for most scripts, also copy the `modules/`  directory into the same location
 - from `/domoticz_dir/dzVents/scripts/modules/`   rename `soif_conf.sample/`  to  `soif_conf/`  
@@ -29,15 +31,20 @@ my personnal script collection.
   *Generic bash scripts that can be used directly, or called from Domoticz.*
 
 ### Featured Bash scripts
-- **soif_hg612_XXX** : (Huawei HG612 Modem) Various scripts to reboot, resync ADSL, or get JSON statistics
 
+- **soif_hg612_XXX** : (Huawei HG612 Modem) Various scripts to reboot, resync ADSL, or get JSON statistics
 - **soif_livebox_XXX** : (Orange Livebox Modem) Various scripts to reboot, renew Public IP, or get JSON statistics
 - **soif_pfsense_ppoe_reload** : (pfSense Firewall) restart the PPoE conection to renew the public IP
+- **soif_pbx_asterisk_restart** : (Asterisk) remotely restart the asterisk server
+
 
 ### Requirements
+
 - bash
 
+
 ### Installation
+
 - rename `bash/soif_conf.conf.sample/`  to  `bash/soif_conf.conf`  
 - Cutomize the `bash/soif_conf.conf` files according to your own needs
 
