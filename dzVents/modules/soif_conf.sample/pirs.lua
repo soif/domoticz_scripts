@@ -286,6 +286,7 @@ vars.pirs[i].nabaztag	='facteur'
 --------------------------------------
 i=i+1
 vars.pirs[i]			={}
+--vars.pirs[i].id			=glob.but_test 
 vars.pirs[i].id			=556 -- wc light
 vars.pirs[i].name		='WC'
 vars.pirs[i].message	='Ventil WC'
@@ -306,8 +307,8 @@ vars.pirs[i].min_on		=105		-- only when longer than
 ------------------------------------------------------------
 
 
-
 --[[ 
+
 i=i+1
 vars.pirs[i]				={}
 vars.pirs[i].id				=glob.but_test --glob.but_test

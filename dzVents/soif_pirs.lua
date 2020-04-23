@@ -394,7 +394,7 @@ vars.triggers={}
 for k,v in pairs(vars.pirs) do
   	table.insert(vars.triggers, v.id)
 end
--- func.Echo(vars.triggers)
+--func.Echo(vars.triggers)
 
 return {
 	active = vars.active,
