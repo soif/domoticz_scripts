@@ -5,9 +5,17 @@ local	i	=0
 --[[ #################################################################################################################
 	Thermostat script VARIABLES 
 ################################################################################################################# --]]
-
 vars.active			=true				-- is the script active ?
-vars.temp_absent	=10					-- temperature wanted in 'absent' mode
+vars.script_name	="Thermostat"		-- Name of the Script
+vars.debug_on = true
+
+vars.temp_absent			=10			-- temperature wanted in 'absent' mode
+vars.holidays_use_day		='sat'		-- day period setting to use when on hollidays
+vars.deviation				=0.3		-- maximun temperature deviation allowed
+vars.resent_count			=3			-- (count) how many time to resend the same command  (to fix heaters that may have NOT changed properly)
+vars.resent_hold			=30			-- (sec) resend the same command  not before this duration
+vars.resend_dur				=10			-- (min) always resend heater commands after this time 
+
 
 
 -- Thermostat definitions ------------------------------------------------------
@@ -135,14 +143,6 @@ vars.selectors_levels={
 		['temperature']	=6,
 	},
 }
-
-
--- misc settings ---------------------------------------------------------------------------
-vars.holidays_use_day		='sat'		-- day period setting to use when on hollidays
-vars.deviation				=0.3		-- maximun temperature deviation allowed
-vars.resent_count			=3			-- (count) how many time to resend the same command  (to fix heaters that may have NOT changed properly)
-vars.resent_hold			=30			-- (sec) resend the same command  not before this duration
-vars.resend_dur				=10			-- (min) always resend heater commands after this time 
 
 
 return vars

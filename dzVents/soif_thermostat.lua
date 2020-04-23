@@ -22,9 +22,6 @@ local glob	=	require('soif_conf/globals')
 local vars	=	require('soif_conf/thermostat')
 local func	=	require('soif_utils')
 
-vars.script_name	="Thermostat"
-
-vars.debug_on = true
 
 
 -- ### Functions #################################################################################################
