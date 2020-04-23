@@ -145,43 +145,4 @@ vars.resent_hold			=30			-- (sec) resend the same command  not before this durat
 vars.resend_dur				=10			-- (min) always resend heater commands after this time 
 
 
-
-
-
--- DO NOT CHANGE BELOW THIS LINE #####################################################################################
-
--- Build needed arrays -------------------------
-vars.watched_uservars	={}
-vars.watched_devices	={}
-vars.persistent_data	={}
-
-for k,arr in pairs(vars.thermostats) do
-	table.insert(vars.watched_devices,	arr.selector)
-	if arr.sensor ~= nil then	--skip MASTER
-		table.insert(vars.watched_devices,	arr.sensor)
-		table.insert(vars.watched_devices,	arr.selector) --also watch selectors
-		table.insert(vars.watched_uservars,	arr.uservar)
-		if (arr.heaters ~= nil) then
-			for k,heater_id in pairs(arr.heaters) do
-				vars.persistent_data["states_heater_"..heater_id]= { initial='init', history = true, maxItems = 10, maxHours = 48 }
-			end
-		end
-		if (arr.airconds ~= nil) then
-			for k,heater_id in pairs(arr.airconds.ids) do
-				vars.persistent_data["states_heater_"..heater_id]= { initial='init', history = true, maxItems = 10, maxHours = 48 }
-			end
-		end
-	end
-end
-
--- Add Missing levels names --------------------
-for k,arr in pairs(vars.selectors_levels) do
-	if arr.name == nil then
-		vars.selectors_levels[k].name=arr.type
-	end
-end
-
-
--- END Variables #####################################################################################################
-
 return vars
