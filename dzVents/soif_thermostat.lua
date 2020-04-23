@@ -54,14 +54,14 @@ end
 -------------------------------------------------------------------------------------------
 function DataHeaterStore(heater_id,on_off)
 	local var ='states_heater_'..heater_id
-	func.EchoDebug("Storing DATA : {var} = {on_off}")
+	func.EchoDebug("Storing History : {var} = {on_off}")
 	func.domoticz.data[var].add(on_off)
 end
 
 -------------------------------------------------------------------------------------------
 function DataHeaterListLastRepeatingState(heater_id, on_off)
 	local var ='states_heater_' .. heater_id
-	func.EchoDebug("* Finding DATA : {var} = {on_off} ******* ")
+	func.EchoDebug("* Querying History for : {var} = {on_off} ")
 	local out={}
 	local continue =true
 	func.domoticz.data[var].forEach(
