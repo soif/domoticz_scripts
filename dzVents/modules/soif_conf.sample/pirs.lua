@@ -122,90 +122,94 @@ A Basic PIR example :
 
 -- 	The following are examples that I use at Home or as Tests.
 
---------------------------------------
-i=i+1
+-- OK --------------------------------
+
 vars.pirs[i]			={}
 vars.pirs[i].id			=267
 vars.pirs[i].name		='Salon'
-vars.pirs[i].masters	={449} -- 
-vars.pirs[i].devices	={273} -- table salon
+vars.pirs[i].icon		="pir_salon.png"
+vars.pirs[i].actions	={'switch','growl'}
+vars.pirs[i].masters	={449} -- use Sejour
+vars.pirs[i].devices	={271}	-- Sej.Table
+vars.pirs[i].dur		={30}
+vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=2	--Notifications
 
---------------------------------------
+
+-- OK --------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=315
 vars.pirs[i].name		='Hall'
 vars.pirs[i].icon		="pir_hall.png"
-vars.pirs[i].actions	={'switch','growl'}
-vars.pirs[i].devices	={88, 328}	--Simu1 Cuis, Sej.S
-vars.pirs[i].dur		=2*60
-vars.pirs[i].masters	={450} -- 
+vars.pirs[i].actions	={'growl','indic_light'}
+vars.pirs[i].masters	={450} -- use Hall
+vars.pirs[i].devices	={388}	-- Salon2
+vars.pirs[i].dur		={5}
+vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=2	--Notifications
 
---------------------------------------
+-- OK --------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=318
-vars.pirs[i].name		='Bureau'
-vars.pirs[i].icon		="pir_bureau.png"
-vars.pirs[i].actions	={'switch','growl'}
-vars.pirs[i].devices	={413,415}	--, socket 4, leds
-vars.pirs[i].dur		={60,120}
-vars.pirs[i].masters	={451} -- 
-
---------------------------------------
-i=i+1
-vars.pirs[i]			={}
-vars.pirs[i].id			=421	-- B1
-vars.pirs[i].name		='Buanderie'
-vars.pirs[i].icon		="pir_buanderie.png"
-vars.pirs[i].actions	={'switch', 'growl'}
-vars.pirs[i].devices	={414,415}	--, socket 5, leds burea
-vars.pirs[i].dur		={180,20}
-vars.pirs[i].day_mode	=0	-- always
-vars.pirs[i].masters	={452} -- 
+vars.pirs[i].name		='Gite'
+vars.pirs[i].icon		="pir_gite.png"
+vars.pirs[i].actions	={'switch', 'kodis','growl','indic_light'}
+vars.pirs[i].masters	={451} -- use Gite
+vars.pirs[i].devices	={581}	--, G.Cuisine
+vars.pirs[i].dur		={60,5}
 vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=2	--Notifications
+
+
+
+
+--- PILES CHANGÉES LE 6/9/2020
 
 
 --------------------------------------
 --- OUTSIDE --------------------------
 --------------------------------------
 
--- OK -------------------------------------
-i=i+1
-vars.pirs[i]			={}
-vars.pirs[i].id			=430	-- B5
-vars.pirs[i].name		='Allee'
-vars.pirs[i].icon		="pir_portail.png"
-vars.pirs[i].actions	={'switch', 'kodis','growl', 'indic_light', 'nab_file'}
-vars.pirs[i].masters	={456} -- 
-vars.pirs[i].devices	={388} -- Salon2
---vars.pirs[i].debounce	=90
-vars.pirs[i].growl		={}
-vars.pirs[i].growl.group=2	--Notifications
-vars.pirs[i].nabaztag	='pir'
-
 -- OK ------------------------------------
 i=i+1
 vars.pirs[i]			={}
-vars.pirs[i].id			=425	-- B3
-vars.pirs[i].name		='Garage'
-vars.pirs[i].icon		="pir_garage.png"
-vars.pirs[i].actions	={'switch', 'kodis', 'growl', 'indic_flash'}
-vars.pirs[i].masters	={454,555} -- use Garage + Exterieur
-vars.pirs[i].devices	={388} -- Salon2
+vars.pirs[i].id			=421	-- B01
+vars.pirs[i].name		='PoolHouse'
+vars.pirs[i].icon		="pir_piscine.png"
+vars.pirs[i].actions	={'switch', 'kodis','growl','indic_light'}
+vars.pirs[i].masters	={452,555} -- use PoolHouse + Exterieur
+vars.pirs[i].devices	={412,388}	-- Piscine, Salon2
+vars.pirs[i].dur		={240,5}
+--vars.pirs[i].debounce	=120
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
-
 
 -- OK -------------------------------------
 i=i+1
 vars.pirs[i]			={}
-vars.pirs[i].id			=428	-- B4
+vars.pirs[i].id			=423	-- B02
+vars.pirs[i].name		='Murier'
+vars.pirs[i].icon		="pir_murier.png"
+vars.pirs[i].actions	={'switch', 'kodis','growl', 'indic_light', 'nab_file'}
+vars.pirs[i].masters	={453,555}		-- use Murier + Exterieur
+vars.pirs[i].devices	={568,276,388}	-- E.Cuisine, Murier, Salon2
+vars.pirs[i].dur		={180,240,5}
+vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=3	--Alerts
+vars.pirs[i].nabaztag	='pir'
+
+-- OK -------------------------------------
+i=i+1
+vars.pirs[i]			={}
+vars.pirs[i].id			=428	-- B04
 vars.pirs[i].name		='Entree'
 vars.pirs[i].icon		="pir_entree.png"
 vars.pirs[i].actions	={'switch', 'kodis', 'growl', 'indic_flash', 'nab_file'}
 vars.pirs[i].masters	={455} 
-vars.pirs[i].devices	={388} -- 388=Salon2
+vars.pirs[i].devices	={634,388} -- Entree, Salon2
+vars.pirs[i].dur		={180,5}
 vars.pirs[i].debounce	=30
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=3	--Alerts
@@ -214,39 +218,42 @@ vars.pirs[i].nabaztag	='pir'
 -- OK -------------------------------------
 i=i+1
 vars.pirs[i]			={}
-vars.pirs[i].id			=423	-- B2
-vars.pirs[i].name		='Murier'
-vars.pirs[i].icon		="pir_murier.png"
-vars.pirs[i].actions	={'switch', 'kodis', 'growl', 'indic_light'}
-vars.pirs[i].masters	={453,555}	-- use Murier + Exterieur
-vars.pirs[i].devices	={276,388}	-- Murier, Salon2
-vars.pirs[i].dur		={300,10}
+vars.pirs[i].id			=430	-- B05
+vars.pirs[i].name		='Allee'
+vars.pirs[i].icon		="pir_portail.png"
+vars.pirs[i].actions	={'switch', 'kodis','growl', 'indic_light', 'nab_file'}
+vars.pirs[i].masters	={456,555} -- Use Allée + Exxterieur
+vars.pirs[i].devices	={278, 388} -- allee, Salon2
+vars.pirs[i].dur		={300,5}
+--vars.pirs[i].debounce	=90
 vars.pirs[i].growl		={}
-vars.pirs[i].growl.group=2	--Notifications
+vars.pirs[i].growl.group=3	--Alerts
+vars.pirs[i].nabaztag	='pir'
 
 -- OK ------------------------------------
 i=i+1
 vars.pirs[i]			={}
-vars.pirs[i].id			=433	-- B6
+vars.pirs[i].id			=433	-- B06
 vars.pirs[i].name		='Barbecue'
 vars.pirs[i].icon		="pir_barbec.png"
-vars.pirs[i].actions	={'switch', 'kodis','growl','indic_light'}
+vars.pirs[i].actions	={'switch', 'kodis','growl', 'indic_light', 'nab_file'}
 vars.pirs[i].masters	={457,555} -- use Barbecue + Exterieur
-vars.pirs[i].devices	={274,388}	-- Bois, Salon2
-vars.pirs[i].dur		={300,10}
+vars.pirs[i].devices	={585,388}	-- E.Sejour, Salon2
+vars.pirs[i].dur		={180,5}
 vars.pirs[i].growl		={}
-vars.pirs[i].growl.group=2	--Notifications
+vars.pirs[i].growl.group=3	--Alerts
+vars.pirs[i].nabaztag	='pir'
 
 -- OK ------------------------------------
 i=i+1
 vars.pirs[i]			={}
-vars.pirs[i].id			=434	-- B7
+vars.pirs[i].id			=434	-- B07
 vars.pirs[i].name		='Bois'
 vars.pirs[i].icon		="pir_bois.png"
 vars.pirs[i].actions	={'switch', 'kodis','growl','indic_light'}
 vars.pirs[i].masters	={458,555} -- use Bois + Exterieur
 vars.pirs[i].devices	={274,388}	-- Bois, Salon2
-vars.pirs[i].dur		={300,10}
+vars.pirs[i].dur		={180,5}
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
 
@@ -254,16 +261,96 @@ vars.pirs[i].growl.group=2	--Notifications
 -- OK ------------------------------------
 i=i+1
 vars.pirs[i]			={}
-vars.pirs[i].id			=439	-- B8
+vars.pirs[i].id			=439	-- B08
 vars.pirs[i].name		='Chalet'
 vars.pirs[i].icon		="pir_chalet.png"
 vars.pirs[i].actions	={'switch', 'kodis','growl','indic_light'}
 vars.pirs[i].masters	={459,555} 	-- use Chalet + Exterieur
-vars.pirs[i].devices	={388}		-- , Salon2
-vars.pirs[i].dur		={10}
+vars.pirs[i].devices	={611,612,388}		-- ,Chalet Est, Chalet Ouest, Salon2
+vars.pirs[i].dur		={180,180,5}
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
 
+
+-- B09 Portail ------------------------------------
+
+-- OK ------------------------------------
+i=i+1
+vars.pirs[i]			={}
+vars.pirs[i].id			=443	-- B10
+vars.pirs[i].name		='Garage'
+vars.pirs[i].icon		="pir_garage.png"
+vars.pirs[i].actions	={'switch', 'kodis', 'growl', 'indic_light'}
+vars.pirs[i].masters	={461,555}	-- use Garage + Exterieur
+vars.pirs[i].devices	={606,388} 	-- Gar.Ouest + Salon2
+vars.pirs[i].dur		={300,5}
+vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=2	--Notifications
+
+-- OK ------------------------------------
+i=i+1
+vars.pirs[i]			={}
+vars.pirs[i].id			=444	-- B11
+vars.pirs[i].name		='Est'
+vars.pirs[i].icon		="pir_est.png"
+vars.pirs[i].actions	={'switch', 'kodis', 'growl', 'indic_flash'}
+vars.pirs[i].masters	={462,555}	-- use Est + Exterieur
+vars.pirs[i].devices	={604,611,388} 	-- Gar.Est + Chalet Est + Salon2
+vars.pirs[i].dur		={120,120,5}
+vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=2	--Notifications
+
+-- OK ------------------------------------
+i=i+1
+vars.pirs[i]			={}
+vars.pirs[i].id			=628	-- B12
+vars.pirs[i].name		='Buanderie'
+vars.pirs[i].icon		="pir_buanderie.png"
+vars.pirs[i].actions	={'switch', 'kodis', 'growl', 'indic_flash'}
+vars.pirs[i].masters	={630,555}	-- use Buanderie + Exterieur
+vars.pirs[i].devices	={580,276,388} 	-- Buanderie + Murier + Salon2
+vars.pirs[i].dur		={120,30,5}
+vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=2	--Notifications
+
+-- OK ------------------------------------
+i=i+1
+vars.pirs[i]			={}
+vars.pirs[i].id			=618	-- B13
+vars.pirs[i].name		='Jardinage'
+vars.pirs[i].icon		="pir_jardinage.png"
+vars.pirs[i].actions	={'switch', 'kodis','growl','indic_light'}
+vars.pirs[i].masters	={625,555} 	-- use Jardinage + Exterieur
+vars.pirs[i].devices	={568,612,388}		-- E.cuisine , Chalet Ouest, Salon2
+vars.pirs[i].dur		={120,120,5}
+vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=2	--Notifications
+
+-- OK ------------------------------------
+i=i+1
+vars.pirs[i]			={}
+vars.pirs[i].id			=620	-- B14
+vars.pirs[i].name		='Terrasee S'
+vars.pirs[i].icon		="pir_terrasse_s.png"
+vars.pirs[i].actions	={'switch', 'kodis', 'growl', 'indic_light'}
+vars.pirs[i].masters	={626,555}	-- use Terrasse S + Exterieur
+vars.pirs[i].devices	={606,388} 	-- Gar.Ouest + Salon2
+vars.pirs[i].dur		={120,5}
+vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=2	--Notifications
+
+-- OK ------------------------------------
+i=i+1
+vars.pirs[i]			={}
+vars.pirs[i].id			=624	-- B15
+vars.pirs[i].name		='Neflier'
+vars.pirs[i].icon		="pir_neflier.png"
+vars.pirs[i].actions	={'switch', 'kodis', 'growl', 'indic_light'}
+vars.pirs[i].masters	={627,555}	-- use Neflier + Exterieur
+vars.pirs[i].devices	={606,412,388} 	-- Gar.Ouest + Piscine + Salon2
+vars.pirs[i].dur		={120,60,5}
+vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=2	--Notifications
 
 
 
@@ -286,7 +373,7 @@ vars.pirs[i].nabaztag	='facteur'
 --------------------------------------
 i=i+1
 vars.pirs[i]			={}
---vars.pirs[i].id			=glob.but_test 
+--vars.pirs[i].id		=glob.but_test 
 vars.pirs[i].id			=556 -- wc light
 vars.pirs[i].name		='WC'
 vars.pirs[i].message	='Ventil WC'
