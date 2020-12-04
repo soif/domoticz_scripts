@@ -39,7 +39,6 @@ Thermostats properties:
 
 
 -- Thermostats objects ##########################################################################
---[[ 
 
 -- MASTER --------
 -- define a global Master selector, which governs all others selectors 
