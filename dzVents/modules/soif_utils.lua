@@ -125,6 +125,16 @@ function fn.Explode(sep,input)
 end
 
 -------------------------------------------------------------------------
+function fn.in_array(val, tab)
+    for index, value in ipairs(tab) do
+        if value == val then
+            return true
+        end
+    end
+    return false
+end
+
+-------------------------------------------------------------------------
 function fn.Round(num, n)
   local mult = 10^(n or 0)
   return math.floor(num * mult + 0.5) / mult
