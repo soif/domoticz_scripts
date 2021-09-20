@@ -1,10 +1,10 @@
 # Scripts For Domoticz
 
-my personnal script collection.
+My personnal scripts collection.
 
 ## dzVents Scripts
   
-  *Various Scripts to use inside Domoticz.*
+  *Various scripts to use inside Domoticz.*
 
 ### Featured dzVents scripts
 
