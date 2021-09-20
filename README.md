@@ -14,7 +14,7 @@ my personnal script collection.
 ### Requirements
 
 - Domoticz
-- phpMyDomo (needed for some scripts using pmd actions)
+- phpMyDomo (needed for some scripts only when using pmd actions)
 
 ### Installation
 
@@ -32,6 +32,7 @@ my personnal script collection.
 
 ### Featured Bash scripts
 
+- **soif_alexa_XXX** : (alexa-remote-control wrapper). Easily make your Amazon Alexa device to play a sound, or speak a text
 - **soif_hg612_XXX** : (Huawei HG612 Modem) Various scripts to reboot, resync ADSL, or get JSON statistics
 - **soif_livebox_XXX** : (Orange Livebox Modem) Various scripts to reboot, renew Public IP, or get JSON statistics
 - **soif_pfsense_ppoe_reload** : (pfSense Firewall) restart the PPoE conection to renew the public IP
@@ -41,6 +42,7 @@ my personnal script collection.
 ### Requirements
 
 - bash
+- For Alexa scripts, install *oathtool*, *jq* and *curl*. ie (for debian ): `apt-get install oathtool jq curl`
 
 
 ### Installation

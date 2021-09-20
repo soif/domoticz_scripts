@@ -17,7 +17,7 @@ SOIF_GLOB[h612_post]="$(dirname $0)/soif_pbx_asterisk_restart.sh 180" # Script t
 # Livebox Modem 
 # -------------------------------------------------------------------------------------- #
 SOIF_GLOB[livebox_host]=10.2.11.3		# Livebox hostname or IP
-SOIF_GLOB[livebox_pass]=YOUR_PASS        # Livebox Admin Password
+SOIF_GLOB[livebox_pass]="AdminPassword"		# Livebox Admin Password
 #SOIF_GLOB[h612_post]="$(dirname $0)/soif_pbx_asterisk_restart.sh 180" # Script to execute after 
 
 # -------------------------------------------------------------------------------------- #
@@ -37,8 +37,66 @@ SOIF_GLOB[pbx_host]=pbx.lo.lo		# Pbx hostname or IP
 SOIF_GLOB[pbx_user]=root			# Pbx root user
 
 
+# -------------------------------------------------------------------------------------- #
+# alexa
+# -------------------------------------------------------------------------------------- #
+declare -A SOIF_ALEXA 
 
+#This will set environnement variables for alexa-remote-control (examine it for help)
+
+SOIF_ALEXA[EMAIL]="AmazonAccountEmailAddress"
+SOIF_ALEXA[PASSWORD]="AmazonAccountPassword"
+SOIF_ALEXA[MFA_SECRET]="MfaSecret"
+SOIF_ALEXA[REFRESH_TOKEN]=''
+SOIF_ALEXA[TTS_LOCALE]="fr-FR"
+SOIF_ALEXA[AMAZON]="amazon.fr"
+SOIF_ALEXA[ALEXA]="alexa.amazon.fr"
+#SOIF_ALEXA[LANGUAGE]="en,fr;q=0.8,fr-FR;q=0.5,en-US;q=0.3"
+#SOIF_ALEXA[BROWSER]='Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:1.0) bash-script/1.0'
+#SOIF_ALEXA[CURL]='/usr/bin/curl'
+#SOIF_ALEXA[OPTS]='--compressed --http1.1'
+#SOIF_ALEXA[OATHTOOL]='/usr/bin/oathtool'
+#SOIF_ALEXA[TMP]='/tmp'
+#SOIF_ALEXA[SPEAKVOL]='5'
+#SOIF_ALEXA[NORMALVOL]='10'
+#SOIF_ALEXA[DEVICEVOLNAME]=''
+#SOIF_ALEXA[DEVICEVOLSPEAK]=''
+#SOIF_ALEXA[DEVICEVOLNORMAL]=''
+#SOIF_ALEXA[VOLMAXAGE]='1'
+
+
+# Defaults -----------------------------------------------------------------------------
+# When set, automatically set the device & voice
+SOIF_ALEXA[DEFAULT_DEVICE]="Partout"	# Device to play, if -d option is not set
+SOIF_ALEXA[DEFAULT_VOICE]="Mathieu"		# Voice used,
+
+# Sound presets ------------------------------------------------------------------------
+# shorcuts to sound effects from https://developer.amazon.com/en-US/docs/alexa/custom-skills/ask-soundlibrary.html 
+# Example: soif_alexa_sound.sh water
+SOIF_ALEXA[sound_water]="boats_ships/splashing_rowboat/rowboat_canoe_01"
+SOIF_ALEXA[sound_alarm]="scifi/amzn_sfx_scifi_alarm_04"
+SOIF_ALEXA[sound_alarm2]="musical/amzn_sfx_buzzer_loud_alarm_01"
+SOIF_ALEXA[sound_door]="home/amzn_sfx_doorbell_chime_01"
+SOIF_ALEXA[sound_chime]="bell/chimes/chimes_05"
+SOIF_ALEXA[sound_lock]="boats_ships/sails/sails_01"
+SOIF_ALEXA[sound_winch]="boats_ships/sails/sails_09"
+SOIF_ALEXA[sound_baby]="voices/baby/baby_05"
+SOIF_ALEXA[sound_baby2]="voices/baby/baby_08"
+SOIF_ALEXA[sound_boo]="human/amzn_sfx_crowd_boo_01"
+SOIF_ALEXA[sound_applause]="human/amzn_sfx_crowd_applause_01"
+SOIF_ALEXA[sound_cheer]="human/amzn_sfx_crowd_cheer_med_01"
+SOIF_ALEXA[sound_christmas]="holidays/christmas/christmas_02"
+SOIF_ALEXA[sound_cold]="horror/horror_01"
+SOIF_ALEXA[sound_sleep]="human/body/body_09"
+SOIF_ALEXA[sound_alien]="scifi/amzn_sfx_scifi_alien_voice_01"
+
+SOIF_ALEXA[sound_wc1]="human/body/body_03"
+SOIF_ALEXA[sound_wc2]="musical/amzn_sfx_buzzer_loud_alarm_01"
+SOIF_ALEXA[sound_wc3]="scifi/amzn_sfx_scifi_alarm_04"
+
+SOIF_ALEXA[sound_url]="https://www.jovo.tech/downloads/pizza.mp3"	#example from an external (valid) URL
 
 # -------------------------------------------------------------------------------------- #
 # Place Holder 
 # -------------------------------------------------------------------------------------- #
+
