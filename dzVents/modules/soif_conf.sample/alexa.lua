@@ -28,12 +28,13 @@ vars.say_script		="/root/scripts/bash/soif_alexa_speak.sh" -- Absolute path to s
 i=556 --- WC
 vars.switches[i]			   ={}
 vars.switches[i]['on']		={'play','wc1'}
-vars.switches[i]['on']		={'play','wc2'}
+vars.switches[i]['off']		={'play','wc2'}
 
 
 i=557 --- WC fan
 vars.switches[i]			={}
-vars.switches[i]['on']	={'sound','wc3'}
+vars.switches[i]['on']	={'play','wc3'}
+--vars.switches[i]['off']	={'say',' "On respire enfin?" '}
 
 
 

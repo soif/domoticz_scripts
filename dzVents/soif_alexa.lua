@@ -44,7 +44,7 @@ return {
 		state = string.lower(item.state)
 		if switch[state] ~= nil then
 			if switch[state][1] == 'play' then
-				script=vars.sound_script
+				script=vars.play_script
 			elseif switch[state][1] == 'say' then
 				script=vars.say_script
 			else
