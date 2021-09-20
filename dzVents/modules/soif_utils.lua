@@ -151,7 +151,13 @@ end
 
 -----------------------------------------------------------------------------------------
 function fn.TableHasKey(table,key)
-    return table[key] ~= nil
+	return table[key] ~= nil
+--	for k,value in pairs(table) do
+--		if k == key then
+--			return true
+--    	end
+--  	end
+--	return false
 end
 
 -----------------------------------------------------------------------------------------
