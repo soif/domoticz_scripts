@@ -10,26 +10,31 @@ local i		= 0
 vars.active				=true
 vars.script_name		="Alexa"		-- Name of the Script
 vars.debug_on			=false
-vars.sound_script		="/root/scripts/bash/soif_alexa_sound.sh" -- Absolute path to soif_alexa_sound.sh script
+vars.play_script		="/root/scripts/bash/soif_alexa_sound.sh" -- Absolute path to soif_alexa_sound.sh script
+vars.say_script		="/root/scripts/bash/soif_alexa_speak.sh" -- Absolute path to soif_alexa_speak.sh script
 
 --[[ #####################################################################################
 ###### Switches Definitions ##############################################################
 ##################################################################################### --]]
 
--- switches,  indexed by Domoticz idx
---	- on	: (on state) alexa_sound.sh argurments
---	- off	: (off state) alexa_sound.sh argurments
+-- switches,  indexed by Domoticz idx, then state => a table of {mode, alexa_*.sh argurments}
+-- ie :
+-- vars.switches[556]['on']		={'play','sound1'}                     --> when switch 556 state is 'on', play sound 'sound1'
+-- vars.switches[556]['off']		={'say',' "Hello World" '}             --> when switch 556 state is 'off', say the sentence "Hello World"
+-- vars.switches[557]['off']		={'say',' "Hello World" -d EchoDot1'}  --> when switch 557 state is 'off', say the sentence "Hello World" to device EchoDot1
+-- (Beware that in 'say' mode, the sentence music be enclosed by double quotes (") ! )
 
 
 i=556 --- WC
 vars.switches[i]			   ={}
-vars.switches[i]['on']		='"wc1"'
-vars.switches[i]['off']		='"wc2"'
+vars.switches[i]['on']		={'play','wc1'}
+vars.switches[i]['on']		={'play','wc2'}
 
 
 i=557 --- WC fan
 vars.switches[i]			={}
-vars.switches[i]['on']	='"wc3"'
+vars.switches[i]['on']	={'sound','wc3'}
+
 
 
 

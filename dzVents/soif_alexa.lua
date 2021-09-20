@@ -43,9 +43,18 @@ return {
 		-- Process switch ----
 		state = string.lower(item.state)
 		if switch[state] ~= nil then
-			command=vars.sound_script ..' '.. switch[state]
-			domoticz.utils.osExecute( command )
-			func.Echo("Playing Sound: ({state}) ".. switch[state])
+			if switch[state][1] == 'play' then
+				script=vars.sound_script
+			elseif switch[state][1] == 'say' then
+				script=vars.say_script
+			else
+				func.EchoDebug("Invalid mode ({switch[state][1]})")
+			end
+			if script ~= nil then
+				command=script ..' '.. switch[state][2]
+				domoticz.utils.osExecute( command )
+				func.Echo("{switch[state][1]}: ({state}) ".. switch[state][2])
+				end
 		else
 			func.EchoDebug("Nothing to play ({state})")
 		end
