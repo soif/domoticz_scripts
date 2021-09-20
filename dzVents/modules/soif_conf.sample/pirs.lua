@@ -136,7 +136,7 @@ vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
 
 
--- OK --------------------------------
+-- OK 19/08/21--------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=315
@@ -148,6 +148,20 @@ vars.pirs[i].devices	={388}	-- Salon2
 vars.pirs[i].dur		={5}
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
+
+-- OK --------------------------------
+i=i+1
+vars.pirs[i]			={}
+vars.pirs[i].id			=827
+vars.pirs[i].name		='SDB'
+vars.pirs[i].icon		="pir_sdb.png"
+vars.pirs[i].actions	={'switch','growl'}
+vars.pirs[i].masters	={828} -- use SDB
+vars.pirs[i].devices	={578}	-- SDB Bas
+vars.pirs[i].dur		={300}
+vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=2	--Notifications
+
 
 -- OK --------------------------------
 i=i+1
@@ -164,7 +178,6 @@ vars.pirs[i].growl.group=2	--Notifications
 
 
 
-
 --- PILES CHANGÉES LE 6/9/2020
 
 
@@ -172,7 +185,7 @@ vars.pirs[i].growl.group=2	--Notifications
 --- OUTSIDE --------------------------
 --------------------------------------
 
--- OK ------------------------------------
+-- OK 19/08/21------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=421	-- B01
@@ -186,7 +199,7 @@ vars.pirs[i].dur		={240,5}
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
 
--- OK -------------------------------------
+-- OK 19/08/21-------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=423	-- B02
@@ -200,7 +213,7 @@ vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=3	--Alerts
 vars.pirs[i].nabaztag	='pir'
 
--- OK -------------------------------------
+-- OK 19/08/21-------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=428	-- B04
@@ -215,12 +228,12 @@ vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=3	--Alerts
 vars.pirs[i].nabaztag	='pir'
 
--- OK -------------------------------------
+-- OK 19/08/21-------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=430	-- B05
 vars.pirs[i].name		='Allee'
-vars.pirs[i].icon		="pir_portail.png"
+vars.pirs[i].icon		="pir_allee.png"
 vars.pirs[i].actions	={'switch', 'kodis','growl', 'indic_light', 'nab_file'}
 vars.pirs[i].masters	={456,555} -- Use Allée + Exxterieur
 vars.pirs[i].devices	={278, 388} -- allee, Salon2
@@ -230,7 +243,7 @@ vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=3	--Alerts
 vars.pirs[i].nabaztag	='pir'
 
--- OK ------------------------------------
+-- OK 19/08/21------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=433	-- B06
@@ -244,7 +257,7 @@ vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=3	--Alerts
 vars.pirs[i].nabaztag	='pir'
 
--- OK ------------------------------------
+-- OK 19/08/21------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=434	-- B07
@@ -258,7 +271,7 @@ vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
 
 
--- OK ------------------------------------
+-- OK 19/08/21------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=439	-- B08
@@ -272,9 +285,20 @@ vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
 
 
--- B09 Portail ------------------------------------
-
 -- OK ------------------------------------
+i=i+1
+vars.pirs[i]			={}
+vars.pirs[i].id			=441	-- B10
+vars.pirs[i].name		='Portail'
+vars.pirs[i].icon		="pir_portail.png"
+vars.pirs[i].actions	={'switch', 'kodis', 'growl', 'indic_light'}
+vars.pirs[i].masters	={460,555}	-- use Portail + Exterieur
+vars.pirs[i].devices	={} 	-- 
+vars.pirs[i].dur		={}
+vars.pirs[i].growl		={}
+vars.pirs[i].growl.group=2	--Notifications
+
+-- OK 19/08/21------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=443	-- B10
@@ -287,7 +311,7 @@ vars.pirs[i].dur		={300,5}
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
 
--- OK ------------------------------------
+-- OK 19/08/21------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=444	-- B11
@@ -300,7 +324,7 @@ vars.pirs[i].dur		={120,120,5}
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
 
--- OK ------------------------------------
+-- OK 19/08/21------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=628	-- B12
@@ -313,7 +337,7 @@ vars.pirs[i].dur		={120,30,5}
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
 
--- OK ------------------------------------
+-- OK 19/08/21------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=618	-- B13
@@ -326,7 +350,7 @@ vars.pirs[i].dur		={120,120,5}
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
 
--- OK ------------------------------------
+-- OK 19/08/21------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=620	-- B14
@@ -339,7 +363,7 @@ vars.pirs[i].dur		={120,5}
 vars.pirs[i].growl		={}
 vars.pirs[i].growl.group=2	--Notifications
 
--- OK ------------------------------------
+-- OK 19/08/21------------------------------------
 i=i+1
 vars.pirs[i]			={}
 vars.pirs[i].id			=624	-- B15
