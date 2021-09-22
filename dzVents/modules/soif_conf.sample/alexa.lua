@@ -22,7 +22,7 @@ vars.say_script		="/root/scripts/bash/soif_alexa_speak.sh" -- Absolute path to s
 -- vars.switches[556]['on']		={'play','sound1'}                     --> when switch 556 state is 'on', play sound 'sound1'
 -- vars.switches[556]['off']		={'say',' "Hello World" '}             --> when switch 556 state is 'off', say the sentence "Hello World"
 -- vars.switches[557]['off']		={'say',' "Hello World" -d EchoDot1'}  --> when switch 557 state is 'off', say the sentence "Hello World" to device EchoDot1
--- (Beware that in 'say' mode, the sentence music be enclosed by double quotes (") ! )
+-- (Beware that in 'say' mode, the sentence must be enclosed by double quotes (") ! )
 
 
 i=556 --- WC
