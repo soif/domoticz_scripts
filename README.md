@@ -8,9 +8,10 @@ My personnal scripts collection.
 
 ### Featured dzVents scripts
 
-- **soif_alexa** : Play sounds, or say sentences to Alexa devices, when switches change their states.
-- **soif_thermostat** : handle heaters and/or air conditionners  using a temperature sensor, a (mode) selector and a (relay) switch, with differents temperature per room/hours, or when absent.
-- **soif_pirs** : handle PIRs sensors, to trigger one of mutiple devices, with optionnal notifications (using PMD), durations times, debounce time, period, master switches,....
+- **soif_absent** : Simulates presence by randomly switch On some devices (ie lights) when the master "absent" switch is turned ON.
+- **soif_alexa** : Plays sounds, or say sentences to Alexa devices, when switches change their states.
+- **soif_thermostat** : handles heaters and/or air conditionners  using a temperature sensor, a (mode) selector and a (relay) switch, with differents temperature per room/hours, or when absent.
+- **soif_pirs** : handles PIRs sensors, to trigger one of mutiple devices, with optionnal notifications (using PMD), durations times, debounce time, period, master switches,....
 
 
 ### Requirements
