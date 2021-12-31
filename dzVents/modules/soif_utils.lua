@@ -71,9 +71,9 @@ function fn._Print(mess, parse_variables, is_debug)
 		local prefix =	fn._StrPad(fn.script_name, 13,'.')
 		
 		if is_debug then
-			prefix	= "#####  " .. prefix .. " #### "
+			prefix	= "### " .. prefix .. " ### "
 		else
-			prefix	= "===== [" ..prefix .. "] === "			
+			prefix	= "== [" ..prefix .. "] == "			
 		end
 
 		if type(mess) == "table" then
